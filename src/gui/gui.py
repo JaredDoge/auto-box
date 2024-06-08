@@ -1,42 +1,49 @@
 import sys
-import typing
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore, QtGui
 
-from src.gui.page_attr import PageAttributes
-from src.gui.page_bot import PageBot
-from src.gui.page_setting import PageSetting
+from src.gui.scene_attach_box import SceneAttachBox
+from src.gui.scene_script import SceneScript
+
+class WestTabWidget(QtWidgets.QTabWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setTabPosition(QtWidgets.QTabWidget.West)
+
+    def add_west_tab(self, widget, text, icon_path):
+
+        index = self.addTab(widget, '')
+
+        tab = QtWidgets.QWidget()
+        layout = QtWidgets.QVBoxLayout(tab)
+        layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
+
+        icon_label = QtWidgets.QLabel()
+        img = QtGui.QImage(icon_path)
+        icon_label.setPixmap(QtGui.QPixmap.fromImage(img).scaledToHeight(40))
+        icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
+
+        text_label = QtWidgets.QLabel(text)
+        text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
+
+        layout.addWidget(icon_label)
+        layout.addWidget(text_label)
+
+        self.tabBar().setTabButton(index, QtWidgets.QTabBar.LeftSide, tab)
 
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("auto-box")
-        self.setFixedSize(400, 600)
+        self.setWindowTitle("MapleBot")
+        self.setFixedSize(800, 600)
 
-        tab_widget = QtWidgets.QTabWidget(self)
-        self.setCentralWidget(tab_widget)
+        main_tab_widget = WestTabWidget(self)
+        self.setCentralWidget(main_tab_widget)
 
-        page_bot = PageBot()
-        tab_widget.addTab(page_bot, "附加")
-
-        page_attr = PageAttributes()
-        tab_widget.addTab(page_attr, "屬性")
-
-        page_setting = PageSetting()
-        tab_widget.addTab(page_setting, "設定")
-
-        # 取得 QTabBar，並設定選項卡的高度
-        tab_bar = tab_widget.tabBar()
-        tab_bar.setStyleSheet("""
-            QTabBar::tab 
-            {
-             height: 30px; 
-             width: 70px;
-             font-size: 18px;       
-            }
-            """)
+        main_tab_widget.add_west_tab(SceneScript(), "腳本", "res/main_tab/tab_script.png")
+        main_tab_widget.add_west_tab(SceneAttachBox(), "附加方塊", "res/main_tab/tab_attach_box.png")
 
 
 class GUI(QtWidgets.QApplication):

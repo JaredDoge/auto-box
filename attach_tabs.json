@@ -1,0 +1,137 @@
+[
+    {
+        "name": "160飾品",
+        "targets": [
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "DEX+8%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+6%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "全屬+6%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+6%",
+                "attr3": "全屬+5%"
+            }
+        ]
+    },
+    {
+        "name": "dex 755",
+        "targets": [
+            {
+                "attr1": "DEX+7%",
+                "attr2": "DEX+7%",
+                "attr3": "DEX+7%"
+            },
+            {
+                "attr1": "DEX+7%",
+                "attr2": "DEX+7%",
+                "attr3": "DEX+5%"
+            },
+            {
+                "attr1": "DEX+7%",
+                "attr2": "DEX+7%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+7%",
+                "attr2": "DEX+5%",
+                "attr3": "DEX+5%"
+            },
+            {
+                "attr1": "DEX+7%",
+                "attr2": "DEX+5%",
+                "attr3": "全屬+4%"
+            },
+            {
+                "attr1": "DEX+7%",
+                "attr2": "全屬+4%",
+                "attr3": "全屬+4%"
+            }
+        ]
+    },
+    {
+        "name": "神秘手套",
+        "targets": [
+            {
+                "attr1": "爆傷+3%",
+                "attr2": "爆傷+3%",
+                "attr3": "爆傷+3%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "DEX+8%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+6%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+6%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "全屬+5%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "爆傷+3%",
+                "attr2": "爆傷+3%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "爆傷+3%",
+                "attr2": "爆傷+3%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "爆傷+3%",
+                "attr2": "DEX+6%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "爆傷+3%",
+                "attr2": "DEX+6%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "爆傷+3%",
+                "attr2": "全屬+5%",
+                "attr3": "全屬+5%"
+            }
+        ]
+    }
+]

@@ -1,0 +1,34 @@
+[
+    {
+        "name": "DEX+8%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/dex_8p.png"
+    },
+    {
+        "name": "DEX+7%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/dex_7p.png"
+    },
+    {
+        "name": "DEX+6%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/dex_6p.png"
+    },
+    {
+        "name": "DEX+5%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/dex_5p.png"
+    },
+    {
+        "name": "全屬+6%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/all_6p.png"
+    },
+    {
+        "name": "全屬+5%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/all_5p.png"
+    },
+    {
+        "name": "全屬+4%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/all_4p.png"
+    },
+    {
+        "name": "爆傷+3%",
+        "path": "C:/Users/a0975/Desktop/牛皮附加/assets/crit_3p.png"
+    }
+]
