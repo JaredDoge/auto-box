@@ -1,0 +1,75 @@
+[
+    {
+        "name": "測試",
+        "macros": [
+            {
+                "name": "48442425",
+                "count": -1,
+                "interval": 500,
+                "commands": [
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "s",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 103.0,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "f",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 15.0,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "d",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 15.0,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "s",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 23.0,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "d",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 64.0,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "f",
+                        "__type": "KeyboardCommandModel"
+                    }
+                ]
+            }
+        ]
+    }
+]

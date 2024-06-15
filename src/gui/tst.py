@@ -8,7 +8,7 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QObject
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QListWidget, QPushButton, QWidget
 
-from src.data.signal_model import SignalModel, KeyboardSignalModel, DelaySignalModel, SignalModelBase
+from src.data.macro_model import SignalModel, KeyboardCommandModel, DelayCommandModel, CommandModelBase
 
 
 class Signal(Enum):
@@ -73,9 +73,9 @@ class KeyRecorder(QMainWindow):
     def add_item(self, signal: SignalModel):
         self.signals.append(signal)
         text = ''
-        if signal.signal == "delay":
+        if signal.command == "delay":
             text = f"延遲 {signal.time}"
-        elif signal.signal == "keyboard":
+        elif signal.command == "keyboard":
             text = f"{'按下' if signal.event_type == 'down' else '抬起'} {signal.event_name}"
         self.list_widget.addItem(text)
         self.list_widget.scrollToBottom()
@@ -91,7 +91,7 @@ class KeyRecorder(QMainWindow):
             if last_time == 0:
                 if event.event_type == 'down':
                     last_time = time.time()
-                    current_signal = KeyboardSignalModel(event_name=event.name, event_type=event.event_type)
+                    current_signal = KeyboardCommandModel(event_name=event.name, event_type=event.event_type)
                     self.add_item_signal.emit(current_signal)
                 continue
 
@@ -102,17 +102,17 @@ class KeyRecorder(QMainWindow):
             delay = current_time - last_time
             last_time = current_time
 
-            self.add_item(DelaySignalModel(time=delay))
+            self.add_item(DelayCommandModel(time=delay))
             if event.event_type == 'down' or event.event_type == 'up':
-                current_signal = KeyboardSignalModel(event_name=event.name, event_type=event.event_type)
+                current_signal = KeyboardCommandModel(event_name=event.name, event_type=event.event_type)
                 self.add_item_signal.emit(current_signal)
 
             time.sleep(0.01)
     def play_recording(self):
         for signal in self.signals:
-            if isinstance(signal, DelaySignalModel):
+            if isinstance(signal, DelayCommandModel):
                 time.sleep(signal.time)
-            elif isinstance(signal, KeyboardSignalModel):
+            elif isinstance(signal, KeyboardCommandModel):
                 if signal.event_type == 'down':
                     keyboard.press(signal.event_name)
                 elif signal.event_type == 'up':

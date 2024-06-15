@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
 
-class ScriptHomePage(QtWidgets.QWidget):
+class PageScriptBot(QtWidgets.QWidget):
 
     def __init__(self):
         super().__init__()

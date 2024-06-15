@@ -3,6 +3,8 @@ from dataclasses import dataclass, field
 from typing import List
 
 from dataclasses_json import dataclass_json
+
+from src.data.macro_model import MacroGroupModel
 from src.module.cv import cv_imread
 
 
@@ -47,6 +49,7 @@ class Data:
         self._attrs = self._to_dataclass(self.load_json("attrs.json"), AttrModel)
         self._tabs = self._to_dataclass(self.load_json("attach_tabs.json"), TabModel)
         self._setting = self._to_dataclass(self.load_json("setting.json", '{}'), SettingModel, many=False)
+        self._macro_groups = self._to_dataclass(self.load_json("macro_groups.json"), MacroGroupModel)
         self._base = self._to_dataclass(self.load_json("base.json", '{}'), BaseModel, many=False)
         self._templates = {a.name: cv_imread(a.path) for a in self._attrs if os.path.exists(a.path)}
         self.set_base(self._base)
@@ -78,6 +81,11 @@ class Data:
         with open("attach_tabs.json", "w",  encoding='utf-8') as json_file:
             json_file.write(self._to_json(tabs, TabModel))
 
+    def set_macro_groups(self, macro_groups):
+        self._macro_groups = macro_groups
+        with open("macro_groups.json", "w",  encoding='utf-8') as json_file:
+            json_file.write(self._to_json(macro_groups, MacroGroupModel))
+
     def set_setting(self, setting):
         self._setting = setting
         with open("setting.json", "w",  encoding='utf-8') as json_file:
@@ -96,6 +104,9 @@ class Data:
 
     def get_tabs(self):
         return self._tabs
+
+    def get_macro_groups(self):
+        return self._macro_groups
 
     def get_templates(self):
         return self._templates

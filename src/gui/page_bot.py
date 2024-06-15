@@ -42,7 +42,6 @@ class TargetSelectDialog(QtWidgets.QDialog):
         ok_button = QtWidgets.QPushButton("OK")
         ok_button.clicked.connect(self._check_empty)
         layout.addWidget(ok_button)
-
         self.setLayout(layout)
 
     def _check_empty(self):
@@ -157,7 +156,7 @@ class PageBot(QtWidgets.QWidget):
     def _check_tab_select(self, remove):
         if self.tab_list_widget.currentRow() == -1:
             return
-        name = self.tab_list_widget.get_tab_name(self.tab_list_widget.currentRow())
+        name = self.tab_list_widget.get_group_name(self.tab_list_widget.currentRow())
         mbox = QtWidgets.QMessageBox(self)
         ret = mbox.question(self, '刪除', f'確定要底力特 "{name}" 嗎?')
         if ret == QtWidgets.QMessageBox.Yes:
