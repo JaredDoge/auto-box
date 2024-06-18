@@ -6,49 +6,8 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QListView
 
 from src import config
-from src.gui.attach_box.scene_attach_box import SceneAttachBox
-from src.gui.macro.main.macro_main import MacroMain
 from src.gui.macro.scene_macro import SceneMarco
 
-
-# class WestTabWidget(QtWidgets.QTabWidget):
-#     def __init__(self, parent=None):
-#         super().__init__(parent)
-#         self.setTabPosition(QtWidgets.QTabWidget.West)
-#
-#     def add_west_tab(self, widget, text, icon_path):
-#         index = self.addTab(widget, '')
-#
-#         tab = QtWidgets.QWidget()
-#         layout = QtWidgets.QVBoxLayout(tab)
-#         layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
-#
-#         icon_label = QtWidgets.QLabel()
-#         img = QtGui.QImage(icon_path)
-#         icon_label.setPixmap(QtGui.QPixmap.fromImage(img).scaledToHeight(40))
-#         icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
-#
-#         text_label = QtWidgets.QLabel(text)
-#         text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
-#
-#         layout.addWidget(icon_label)
-#         layout.addWidget(text_label)
-#
-#         self.tabBar().setTabButton(index, QtWidgets.QTabBar.LeftSide, tab)
-#
-
-# class MainWindow(QtWidgets.QMainWindow):
-#     def __init__(self):
-#         super().__init__()
-#         #
-# self.setWindowTitle("MapleBot")
-# self.setFixedSize(600, 600)
-#
-# main_tab_widget = WestTabWidget(self)
-# self.setCentralWidget(main_tab_widget)
-#
-# main_tab_widget.add_west_tab(SceneMarco(), "巨集", "res/main_tab/tab_script.png")
-# main_tab_widget.add_west_tab(SceneAttachBox(self), "附加方塊", "res/main_tab/tab_attach_box.png")
 
 class MenuItemWidget(QtWidgets.QWidget):
     def __init__(self, text, icon_path):
@@ -79,6 +38,7 @@ class MenuItemWidget(QtWidgets.QWidget):
 
 class MainWindow(QtWidgets.QMainWindow):
     key_signal = pyqtSignal()
+
     def __init__(self):
         super().__init__()
 
@@ -117,15 +77,15 @@ class MainWindow(QtWidgets.QMainWindow):
     @pyqtSlot()
     def switch(self, _=None):
         if self.is_start:
+            print('停止')
             self.is_start = False
             config.macro_bot.stop()
         else:
             self.is_start = True
+            print('開始')
             groups = config.data.get_macro_groups()
-
-            config.macro_bot.start(groups[0].macros)
-
-
+            l = groups[0].macros
+            config.macro_bot.start(list(filter(lambda m: m.run, l)))
 
     def add_list_item(self, text: str, icon_path, stack):
         self.stack_widget.addWidget(stack)

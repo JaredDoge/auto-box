@@ -66,7 +66,6 @@ class MacroMain(QtWidgets.QWidget):
         row_layout = QtWidgets.QVBoxLayout()
         self.row_widget = MarcoRowWidget(self._data_change)  # 帶入資料監聽器，有資料異動呼叫
 
-
         row_add = QtWidgets.QPushButton("+")
         row_add.setFixedSize(30, 30)
         row_add.setStyleSheet("font-size: 18px")

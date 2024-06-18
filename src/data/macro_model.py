@@ -32,7 +32,8 @@ CommandModel: TypeAlias = Union[DelayCommandModel, KeyboardCommandModel]
 class MacroRowModel:
     name: str
     count: int
-    interval: int
+    interval: float
+    run: bool
     commands: list[CommandModel]
 
 

@@ -8,27 +8,28 @@ from src import config
 from src.gui.gui import GUI
 
 
+def cleanup():
+    config.macro_bot.stop()
+
+
 def run():
+    try:
 
-    config.data = Data()
+        config.data = Data()
 
-    config.switch = Switch()
+        config.switch = Switch()
 
-    # bot = Bot()
-    # bot.start()
-    # while not bot.ready:
-    #     time.sleep(0.01)
-    # config.bot = bot
+        # bot = Bot()
+        # bot.start()
+        # while not bot.ready:
+        #     time.sleep(0.01)
+        # config.bot = bot
 
-    macro_bot = MacroBot()
-    config.macro_bot = macro_bot
+        macro_bot = MacroBot()
+        config.macro_bot = macro_bot
 
-    gui = GUI()
-    gui.start()
-
-    # switch.thread.join()
-    # bot.thread.join()
-
-
-
+        gui = GUI()
+        gui.start()
+    finally:
+        cleanup()
 
