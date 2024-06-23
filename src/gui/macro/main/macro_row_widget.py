@@ -17,20 +17,35 @@ class RowItemWidget(QtWidgets.QWidget):
 
         self.checkbox = QtWidgets.QCheckBox()
         self.checkbox.setChecked(macro.run)
-        # self.checkbox.setStyleSheet("""
-        #            QCheckBox::indicator {
-        #                width: 40px;
-        #                height: 40px;
-        #            }
-        #        """)
+
         self.checkbox.toggled.connect(self._on_checkbox_toggled)
 
-        self.label = QtWidgets.QLabel(macro.name)
+        info_layout = QtWidgets.QVBoxLayout()
+
+        label_title = QtWidgets.QLabel(macro.name)
+        label_title.setStyleSheet('''
+                        font-size:18px;
+        ''')
+
+        label_info = QtWidgets.QLabel(self._get_info())
+        label_info.setStyleSheet('''
+                        font-size:14px;
+                        color: #272727;
+                ''')
+
+        info_layout.addWidget(label_title)
+        info_layout.addWidget(label_info)
 
         layout.addWidget(self.checkbox)
-        layout.addWidget(self.label)
+        layout.addSpacing(10)
+        layout.addLayout(info_layout, stretch=1)
 
         self.setLayout(layout)
+
+    def _get_info(self):
+        count = '無限循環' if self.macro.count == -1 else f'執行 {self.macro.count} 次'
+        interval = f'每次間隔 {self.macro.interval} 秒'
+        return f"{count}, {interval}"
 
     def _on_checkbox_toggled(self, checked):
         self.macro.run = checked
@@ -130,7 +145,7 @@ class MarcoRowWidget(QtWidgets.QListWidget):
 
     def show_add_dialog(self):
 
-        dialog = MacroRowEditDialog(MacroRowModel(name='', run=True, interval=0.5, count=-1, commands=[]))
+        dialog = MacroRowEditDialog()
         result = dialog.exec_()
 
         if result == QtWidgets.QDialog.Accepted:

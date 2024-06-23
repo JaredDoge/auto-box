@@ -20,7 +20,7 @@ def rescue(window) -> bool:
             time.sleep(delay)
     brb_result = None
     step = 0
-    while config.switch.is_open():
+    while config.switch.is_on():
 
         with mss.mss() as sct:
             # 楓谷截圖

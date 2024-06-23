@@ -48,7 +48,7 @@ class MacroMain(QtWidgets.QWidget):
         group_add = QtWidgets.QPushButton("+")
         group_add.setFixedSize(30, 30)
         group_add.setStyleSheet("font-size: 18px")
-        group_add.clicked.connect(lambda: self._group_dialog(self.group_widget.add_group))
+        group_add.clicked.connect(lambda: self._group_dialog())
 
         group_title = QtWidgets.QLabel("群組")
         _title_style(group_title)
@@ -92,10 +92,8 @@ class MacroMain(QtWidgets.QWidget):
         if index != -1:
             self.row_widget.update_all(self.macro_group_list[index].macros)
 
-    def _group_dialog(self, add):
-        text, ok = QtWidgets.QInputDialog().getText(self, '', '請輸入巨集群組名稱')
-        if ok and len(text) != 0:
-            add(MacroGroupModel(name=text, macros=[]))
+    def _group_dialog(self):
+        self.group_widget.show_add_dialog()
 
     # 資料有異動，更新資料庫
     def _data_change(self):

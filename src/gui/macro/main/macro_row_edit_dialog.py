@@ -1,22 +1,22 @@
 import time
 
-import keyboard
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QFont, QIntValidator, QDoubleValidator
-from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QHBoxLayout, QListWidget, QMenu, QDialogButtonBox
+from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QHBoxLayout, QListWidget, QMenu, QDialogButtonBox, QMessageBox
 import copy
 
+from src import config
 from src.data.macro_model import MacroRowModel, KeyboardCommandModel, DelayCommandModel, CommandModel
 from src.gui.common.ignore_right_menu import IgnoreRightButtonMenu
 
 
 class DelayInputDialog(QtWidgets.QDialog):
-    def __init__(self, delay: DelayCommandModel):
+    def __init__(self, delay: DelayCommandModel = None):
         super().__init__()
 
-        self.delay = copy.deepcopy(delay)
+        self.delay = copy.deepcopy(delay) if delay else DelayCommandModel(time=0.5)
 
         self.setWindowTitle("延遲時間(秒)")
 
@@ -61,19 +61,39 @@ class DelayInputDialog(QtWidgets.QDialog):
 
 
 class CommandListWidget(QtWidgets.QListWidget):
-    def __init__(self):
+    def __init__(self, record_signal):
         super().__init__()
         self.setSelectionMode(QListWidget.ExtendedSelection)
         self.commands = None
+        self.record_signal = record_signal
         self.setContextMenuPolicy(Qt.CustomContextMenu)
         self.customContextMenuRequested.connect(self._show_context_menu)
 
         self.itemDoubleClicked.connect(self._on_item_double_clicked)
+        self.is_recording = False
+
+    def keyPressEvent(self, event):
+        if event.key() == Qt.Key_Delete and not self.is_recording:
+            items = self.selectedItems()
+            if len(items) > 0:
+                indexes = [self.row(item) for item in items]
+                head_index = min(indexes)
+                tail_index = max(indexes)
+                self.remove_commands(head_index, tail_index)
+        else:
+            super(CommandListWidget, self).keyPressEvent(event)
 
     def _on_item_double_clicked(self, item):
-        self._edit_delay(self.row(item))
+        # 錄製中不能編輯
+        if self.is_recording:
+            return
+        self.edit_delay(self.row(item))
 
     def _show_context_menu(self, pos):
+        # 錄製中不能編輯
+        if self.is_recording:
+            return
+
         item = self.itemAt(pos)
         if item is None:
             return
@@ -81,7 +101,8 @@ class CommandListWidget(QtWidgets.QListWidget):
 
         context_menu = IgnoreRightButtonMenu(self)
 
-        edit_action = delete_action = before_action = after_action = delete_all_action = None
+        edit_action = delete_action = delay_after_action = delay_before_action = \
+            before_action = after_action = delete_all_action = None
         # 選到單個
 
         if len(selected_items) == 1:
@@ -89,10 +110,11 @@ class CommandListWidget(QtWidgets.QListWidget):
             # 只有延遲時間可以編輯，按鍵會有 up 跟 down 的問題
             if isinstance(self.commands[index], DelayCommandModel):
                 edit_action = context_menu.addAction("編輯")
-
-            delete_action = context_menu.addAction("刪除")
+            delay_before_action = context_menu.addAction("此前延遲")
+            delay_after_action = context_menu.addAction("此後延遲")
             before_action = context_menu.addAction("此前紀錄")
             after_action = context_menu.addAction("此後紀錄")
+            delete_action = context_menu.addAction("刪除")
         elif len(selected_items) > 1:
             delete_all_action = context_menu.addAction("刪除所選")
 
@@ -100,22 +122,24 @@ class CommandListWidget(QtWidgets.QListWidget):
 
         if action is None:
             return
-
+        index = self.row(item)
         if action == edit_action:
-            self._edit_delay(self.row(item))
+            self.edit_delay(index)
         elif action == delete_action:
-            self.remove_command(self.row(item))
+            self.remove_command(index)
         elif action == before_action:
-            print("Before action triggered")
-            # 在此执行此前紀錄操作
+            self.record_signal.emit(index)
         elif action == after_action:
-            print("After action triggered")
-            # 在此执行此後紀錄操作
+            self.record_signal.emit(index + 1)
         elif len(selected_items) > 1 and action == delete_all_action:
             indexes = [self.row(item) for item in selected_items]
             head_index = min(indexes)
             tail_index = max(indexes)
             self.remove_commands(head_index, tail_index)
+        elif action == delay_after_action:
+            self.add_delay(index + 1)
+        elif action == delay_before_action:
+            self.add_delay(index)
 
     def update_all(self, commands: list[CommandModel]):
         self.clear()
@@ -170,14 +194,24 @@ class CommandListWidget(QtWidgets.QListWidget):
         if focus:
             self.setCurrentRow(index)
 
-    def _edit_delay(self, index):
+    def edit_delay(self, index):
+        if index >= len(self.commands) or index < 0:
+            return
+        command = self.commands[index]
+        if not isinstance(command, DelayCommandModel):
+            return
+
+        dialog = DelayInputDialog(command)
+        if dialog.exec_() == QtWidgets.QDialog.Accepted:
+            self.edit_command(index, dialog.get_value())
+
+    def add_delay(self, index):
         if index >= len(self.commands) or index < 0:
             return
 
-        delay = self.commands[index]
-        dialog = DelayInputDialog(delay)
+        dialog = DelayInputDialog()
         if dialog.exec_() == QtWidgets.QDialog.Accepted:
-            self.edit_command(index, dialog.get_value())
+            self.add_command(dialog.get_value(), index, False)
 
 
 class CountSelectWidget(QtWidgets.QWidget):
@@ -249,8 +283,9 @@ class CountSelectWidget(QtWidgets.QWidget):
 
 class MacroRowEditDialog(QtWidgets.QDialog):
     add_item_signal = pyqtSignal(object)
+    block_record_signal = pyqtSignal(object)
 
-    def __init__(self, row: MacroRowModel, parent=None):
+    def __init__(self, row: MacroRowModel = None, parent=None):
 
         def _get_title_label(title):
             label = QtWidgets.QLabel(title)
@@ -278,9 +313,9 @@ class MacroRowEditDialog(QtWidgets.QDialog):
         super().__init__(parent)
 
         # 由於修改完可能不儲存，所以要用deep copy
-        self.row = copy.deepcopy(row)
+        self.row = copy.deepcopy(row) if row else MacroRowModel(name='', run=True, interval=0.5, count=-1, commands=[])
 
-        self.is_hook = False
+        self.block_index = -1
 
         self.setWindowTitle("巨集編輯")
         self.setFixedSize(450, 575)
@@ -300,7 +335,7 @@ class MacroRowEditDialog(QtWidgets.QDialog):
 
         h_layout = QHBoxLayout()
         h_layout.setContentsMargins(10, 0, 0, 0)
-        self.command_list_widget = CommandListWidget()
+        self.command_list_widget = CommandListWidget(self.block_record_signal)
         h_layout.addWidget(self.command_list_widget)
         layout.addLayout(h_layout)
         self.command_list_widget.update_all(self.row.commands)
@@ -350,6 +385,7 @@ class MacroRowEditDialog(QtWidgets.QDialog):
         self.current: KeyboardCommandModel | None = None
 
         self.add_item_signal.connect(self.add_item)
+        self.block_record_signal.connect(self.start_block_recording)
 
     def confirm(self):
         if len(self.name_widget.text()) <= 0:
@@ -381,45 +417,66 @@ class MacroRowEditDialog(QtWidgets.QDialog):
         return self.row
 
     def closeEvent(self, event):
-        if self.is_hook:
-            keyboard.unhook(self.on_event)
-            self.is_hook = False
+        config.signal.remove_listener(self.on_event)
         super().closeEvent(event)
 
+    def _edit_enable(self, enable):
+        self.name_widget.setEnabled(enable)
+        self.count_widget.setEnabled(enable)
+        self.interval_widget.setEnabled(enable)
+        self.confirm_button.setEnabled(enable)
+
     def toggle_recording(self):
-        def _edit_enable(enable):
-            self.name_widget.setEnabled(enable)
-            self.count_widget.setEnabled(enable)
-            self.interval_widget.setEnabled(enable)
-            self.confirm_button.setEnabled(enable)
 
         if self.recording:
             self.stop_recording()
-            self.record_button.setText("開始錄製")
-            _edit_enable(True)
         else:
+            if len(self.row.commands) > 0:
+                reply = QMessageBox.question(
+                    self,
+                    '確認',
+                    '開始錄製會先清空目前的紀錄，確定要開始錄製嗎?',
+                    QMessageBox.Yes | QMessageBox.No,
+                    QMessageBox.No
+                )
+                if reply == QMessageBox.No:
+                    return
+
+            self.row.commands.clear()
+            self.command_list_widget.clear()
             self.start_recording()
-            self.record_button.setText("停止錄製")
-            _edit_enable(False)
 
     def start_recording(self):
         self.recording = True
-        self.row.commands.clear()
-        self.command_list_widget.clear()
+        self.record_button.setText("停止錄製")
+        self._edit_enable(False)
         self.current = None
         self.last_time = 0
-        keyboard.hook(self.on_event)
-        self.is_hook = True
+        self.command_list_widget.is_recording = True
+        config.signal.add_listener(self.on_event, 0)
 
     def stop_recording(self):
+        self.block_index = -1
         self.recording = False
-        if self.is_hook:
-            keyboard.unhook(self.on_event)
-            self.is_hook = False
+        self.record_button.setText("開始錄製")
+        self._edit_enable(True)
+        self.command_list_widget.is_recording = False
+        config.signal.remove_listener(self.on_event)
 
     @pyqtSlot(object)
     def add_item(self, command: CommandModel):
-        self.command_list_widget.add_command(command)
+        if self.block_index == -1:
+            # 普通錄製
+            self.command_list_widget.add_command(command)
+        else:
+            # 區塊錄製
+            self.command_list_widget.add_command(command, self.block_index, False)
+            self.block_index = self.block_index + 1
+
+    @pyqtSlot(object)
+    def start_block_recording(self, index: int):
+        self.block_index = index
+        self.start_recording()
 
     def on_event(self, event):
 
@@ -448,3 +505,6 @@ class MacroRowEditDialog(QtWidgets.QDialog):
             self.current = KeyboardCommandModel(event_name=event.name,
                                                 event_type=event.event_type)
             self.add_item_signal.emit(self.current)
+
+        # 攔截事件，不會觸發後面的監聽器
+        return True

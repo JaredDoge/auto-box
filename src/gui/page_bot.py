@@ -220,10 +220,10 @@ class PageBot(QtWidgets.QWidget):
 
         result = [self.convert(t) for t in targets]
 
-        if not config.switch.is_open():
+        if not config.switch.is_on():
             config.bot.set_target_attrs(result)
 
         config.switch.toggle()
-        self.modify_switch(config.switch.is_open())
+        self.modify_switch(config.switch.is_on())
 
 

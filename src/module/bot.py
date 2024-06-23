@@ -58,7 +58,7 @@ class Bot:
         self.target_attrs = target
 
     def can_run(self):
-        return config.switch.is_open() and self.target_attrs
+        return config.switch.is_on() and self.target_attrs
 
     def _main(self):
         mss.windows.CAPTUREBLT = 0
@@ -90,7 +90,7 @@ class Bot:
                 br_result = util.single_match(self.frame, BOX_BR_TEMPLATE)
                 if tl_result is None or br_result is None:
                     log('老鐵，要先開附加框阿')
-                    config.switch.close()
+                    config.switch.unhook()
                     continue
 
                 tl, _ = tl_result
@@ -105,7 +105,7 @@ class Bot:
 
                 if again is None:
                     log('滑鼠不要放在綠色按鈕上R')
-                    config.switch.close()
+                    config.switch.unhook()
                     continue
 
                 again_tl, again_br = again
@@ -132,7 +132,7 @@ class Bot:
                                     continue
                                 else:
                                     # 搶救失敗，或放棄急救
-                                    config.switch.close()
+                                    config.switch.unhook()
                                     break
                             else:
                                 attempt -= 1
@@ -149,7 +149,7 @@ class Bot:
                             time.sleep(0.3)
                             continue
 
-                        if not config.switch.is_open():
+                        if not config.switch.is_on():
                             break
                         # 開始辨識淺能
                         lucky = False
@@ -160,7 +160,7 @@ class Bot:
                                 break
 
                         if lucky:
-                            config.switch.close()
+                            config.switch.unhook()
                             log(f'洗到囉，真香')
                             break
                         else:

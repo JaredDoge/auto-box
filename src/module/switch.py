@@ -1,6 +1,6 @@
-
 from PyQt5.QtCore import pyqtSignal
 
+from src import config
 from src.module.log import log
 
 
@@ -9,23 +9,28 @@ class Switch:
     def __init__(self):
         self._enabled = False
         self.switch_listener = None
+        config.signal.add_listener(self._on_event)
+
+    def _on_event(self, event):
+        if event.name == 'f4':
+            self.toggle()
 
     def set_switch_listener(self, listener):
         self.switch_listener = listener
 
     def _notify(self):
         if self.switch_listener:
-            self.switch_listener(self.is_open())
+            self.switch_listener(self.is_on())
 
-    def is_open(self):
+    def is_on(self):
         return self._enabled
 
-    def open(self):
+    def on(self):
         self._enabled = True
         self._print_state()
         self._notify()
 
-    def close(self):
+    def off(self):
         self._enabled = False
         self._print_state()
         self._notify()
