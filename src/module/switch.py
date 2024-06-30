@@ -1,52 +1,49 @@
-from PyQt5.QtCore import pyqtSignal
-
-from src import config
 from src.module.log import log
+from enum import Enum
+
+
+class SwitchState(Enum):
+    ON = 1
+    OFF = 2
+    IDLE = 0
 
 
 class Switch:
 
     def __init__(self):
-        self._enabled = False
+        self._state = SwitchState.OFF
         self.switch_listener = None
-        config.signal.add_listener(self._on_event)
-
-    def _on_event(self, event):
-        if event.name == 'f4':
-            self.toggle()
 
     def set_switch_listener(self, listener):
         self.switch_listener = listener
 
     def _notify(self):
         if self.switch_listener:
-            self.switch_listener(self.is_on())
+            self.switch_listener(self._state)
 
     def is_on(self):
-        return self._enabled
+        return self._state == SwitchState.ON
+
+    def is_off(self):
+        return self._state == SwitchState.OFF
 
     def on(self):
-        self._enabled = True
+        self._state = SwitchState.ON
         self._print_state()
         self._notify()
 
     def off(self):
-        self._enabled = False
+        self._state = SwitchState.OFF
         self._print_state()
         self._notify()
 
-    def toggle(self, _=None):
-        self._enabled = not self._enabled
+    def idle(self):
+        self._state = SwitchState.IDLE
         self._print_state()
         self._notify()
-        # if self._enabled:
-        #     winsound.Beep(784, 333)     # G5
-        # else:
-        #     winsound.Beep(523, 333)     # C5
-        # time.sleep(0.267)
 
     def _print_state(self):
-        if self._enabled:
+        if self._state == SwitchState.ON:
             log('腳本開始')
-        else:
+        elif self._state == SwitchState.OFF:
             log('腳本停止')

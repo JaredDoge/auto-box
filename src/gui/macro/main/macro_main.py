@@ -92,6 +92,11 @@ class MacroMain(QtWidgets.QWidget):
         if index != -1:
             self.row_widget.update_all(self.macro_group_list[index].macros)
 
+    def get_run_list(self):
+        group = self.macro_group_list[self.group_widget.currentRow()]
+        # 過濾沒有打勾的腳本
+        return list(filter(lambda m: m.run, group.macros))
+
     def _group_dialog(self):
         self.group_widget.show_add_dialog()
 

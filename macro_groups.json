@@ -5,35 +5,60 @@
             {
                 "name": "左右走",
                 "count": -1,
-                "interval": 0.5,
+                "interval": 5.0,
                 "run": true,
                 "commands": [
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "a",
+                        "event_name": "right",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.08,
+                        "time": 0.06,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "right",
+                        "__type": "KeyboardCommandModel"
+                    }
+                ]
+            },
+            {
+                "name": "777ㄒ",
+                "count": 22,
+                "interval": 0.42,
+                "run": false,
+                "commands": [
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "4",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.06,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "s",
+                        "event_name": "5",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.03,
+                        "time": 0.02,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "d",
+                        "event_name": "6",
                         "__type": "KeyboardCommandModel"
                     },
                     {
@@ -44,297 +69,29 @@
                     {
                         "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "a",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.04,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.05,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "d",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.29,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "a",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.11,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "a",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.5,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "a",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.12,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "a",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.47,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "a",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.83,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "a",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.16,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.07,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.18,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "d",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.07,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.69,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.06,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.62,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "d",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.06,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "d",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.01,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "f",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.06,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "f",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.01,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "d",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.53,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.09,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "s",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "5",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.07,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "5",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.06,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "5",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.09,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "5",
-                        "__type": "KeyboardCommandModel"
-                    }
-                ]
-            },
-            {
-                "name": "777ㄒ",
-                "count": 22,
-                "interval": 0.42,
-                "run": true,
-                "commands": [
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
                         "event_name": "4",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.06,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "5",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.02,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "6",
                         "__type": "KeyboardCommandModel"
                     }
                 ]

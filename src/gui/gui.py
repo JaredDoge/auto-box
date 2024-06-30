@@ -1,4 +1,6 @@
 import sys
+from abc import ABC, abstractmethod
+from typing import List
 
 import keyboard
 from PyQt5 import QtWidgets, QtCore, QtGui, Qt
@@ -7,8 +9,12 @@ from PyQt5.QtGui import QPixmap, QPainter, QPen
 from PyQt5.QtWidgets import QLabel
 
 from src import config
-from src.gui.macro.scene_macro import SceneMarco
+from src.gui.macro.scene_macro import SceneMarco, SwitchListener
 from src.gui.scene_attach_box import SceneAttachBox
+from src.module.log import log
+from src.module.macro.macro_task import MacroTaskWrapper
+from src.module.macro.marco_executor import MacroExecutor
+from src.module.switch import SwitchState
 
 
 class BaseItemWidget(QtWidgets.QWidget):
@@ -19,15 +25,15 @@ class BaseItemWidget(QtWidgets.QWidget):
         layout = QtWidgets.QVBoxLayout()
         layout.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
         self.setLayout(layout)
-        icon_label = QtWidgets.QLabel()
+        self.icon_label = QtWidgets.QLabel()
         img = QtGui.QImage(icon_path)
-        icon_label.setPixmap(QtGui.QPixmap.fromImage(img).scaledToHeight(30))
-        icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
-        icon_label.setAttribute(Qt.Qt.WA_TranslucentBackground)
+        self.icon_label.setPixmap(QtGui.QPixmap.fromImage(img).scaledToHeight(30))
+        self.icon_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.icon_label.setAttribute(Qt.Qt.WA_TranslucentBackground)
 
-        text_label = QtWidgets.QLabel(text)
-        text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
-        text_label.setAttribute(Qt.Qt.WA_TranslucentBackground)
+        self.text_label = QtWidgets.QLabel(text)
+        self.text_label.setAlignment(QtCore.Qt.AlignmentFlag.AlignHCenter)
+        self.text_label.setAttribute(Qt.Qt.WA_TranslucentBackground)
 
         self.setAttribute(Qt.Qt.WA_StyledBackground, True)
         self.setStyleSheet("""
@@ -38,8 +44,13 @@ class BaseItemWidget(QtWidgets.QWidget):
                             background-color: #F0F0F0;
                         }
                     """)
-        layout.addWidget(icon_label)
-        layout.addWidget(text_label)
+        layout.addWidget(self.icon_label)
+        layout.addWidget(self.text_label)
+
+    def set(self, text, icon_path):
+        self.text_label.setText(text)
+        img = QtGui.QImage(icon_path)
+        self.icon_label.setPixmap(QtGui.QPixmap.fromImage(img).scaledToHeight(30))
 
 
 class MenuItemWidget(BaseItemWidget):
@@ -62,14 +73,45 @@ class FeatureItemWidget(BaseItemWidget):
         self.click_listener = listener
 
     def mousePressEvent(self, event):
-        print("Widget Clicked!")
         if self.click_listener:
             self.click_listener()
         super().mousePressEvent(event)
 
 
+class StackedWidget(QtWidgets.QStackedWidget):
+
+    def __init__(self):
+        super().__init__()
+        # 啟動時的遮罩
+        self.mask = MaskWidget(self)
+        self.hide_mark()
+
+    def resizeEvent(self, event):
+        super().resizeEvent(event)
+        self.mask.setGeometry(self.geometry())
+
+    def show_mark(self):
+        self.mask.raise_()
+        self.mask.show()
+
+    def hide_mark(self):
+        self.mask.hide()
+
+
+class MaskWidget(QtWidgets.QWidget):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setAttribute(QtCore.Qt.WidgetAttribute.WA_NoSystemBackground)  # 遮罩不绘制系统背景
+
+    def paintEvent(self, event):
+        painter = QtGui.QPainter(self)
+        painter.setBrush(QtGui.QColor(0, 0, 0, 150))  # 设置半透明颜色
+        painter.setPen(QtCore.Qt.PenStyle.NoPen)
+        painter.drawRect(self.rect())  # 绘制遮罩矩形
+
+
 class MainWindow(QtWidgets.QMainWindow):
-    key_signal = pyqtSignal()
+    switch_state_signal = pyqtSignal(object)
 
     def __init__(self):
         super().__init__()
@@ -78,7 +120,10 @@ class MainWindow(QtWidgets.QMainWindow):
         self.setFixedSize(600, 600)
 
         self.is_start = False
-        self.key_signal.connect(self.switch)
+        self.switch_state_signal.connect(self._switch_state)
+        self.resize_mask = False
+
+        self.switch_listener: List[SwitchListener] = []
 
         # 创建一个主部件并设置布局
         container = QtWidgets.QWidget()
@@ -97,11 +142,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.list_widget.setStyleSheet("QListWidget { border: none; }")
         self.list_widget.setFixedWidth(70)
 
-        self.start_btn = FeatureItemWidget("啟動(F5)", "res/play.png")
+        self.switch_btn = FeatureItemWidget("啟動(F5)", "res/play.png")
         self.setting_btn = FeatureItemWidget("設定", "res/settings.png")
 
         menu_layout.addWidget(self.list_widget, stretch=1)
-        menu_layout.addWidget(self.start_btn)
+        menu_layout.addWidget(self.switch_btn)
         menu_layout.addWidget(self.setting_btn)
 
         # 创建StackedWidget作为主显示区
@@ -110,24 +155,50 @@ class MainWindow(QtWidgets.QMainWindow):
         main_layout.addLayout(menu_layout)
         main_layout.addWidget(self.stack_widget, stretch=1)
 
-        # 添加项目到ListWidget并创建对应的页面
-        self.add_list_item("巨集", "res/main_tab/tab_script.png", SceneMarco())
-        self.add_list_item("附加方塊", "res/main_tab/tab_attach_box.png", SceneAttachBox())
+        macro = SceneMarco()
+        self.add_list_item("巨集", "res/main_tab/tab_script.png", macro)
+        self.switch_listener.append(macro)
 
-        keyboard.on_release_key('f4', lambda _: self.key_signal.emit())
+        # 啟動鈕
+        config.signal.add_listener(self._hotkey)
+        self.switch_btn.set_click_listener(self._switch)
 
-    @pyqtSlot()
-    def switch(self, _=None):
-        if self.is_start:
-            print('停止')
-            self.is_start = False
-            config.macro_bot.stop()
-        else:
-            self.is_start = True
-            print('開始')
-            groups = config.data.get_macro_groups()
-            l = groups[0].macros
-            config.macro_bot.start(list(filter(lambda m: m.run, l)))
+        self.mask = MaskWidget(self)
+        self._hide_mask()
+
+        config.switch.set_switch_listener(lambda state: self.switch_state_signal.emit(state))
+
+    def _hotkey(self, event):
+        if event.name == 'f4' and event.event_type == 'down':
+            self._switch()
+
+    def _switch(self):
+        self.switch_listener[self.list_widget.currentRow()].switch()
+
+    def _show_mask(self):
+        if not self.resize_mask:
+            self.resize_mask = True
+            global_pos = self.stack_widget.mapToParent(QtCore.QPoint(0, 0))
+            self.mask.resize(self.stack_widget.size())
+            self.mask.move(global_pos.x(), global_pos.y())
+
+        self.mask.show()
+
+    def _hide_mask(self):
+        self.mask.hide()
+
+    @pyqtSlot(object)
+    def _switch_state(self, state: SwitchState):
+        if state == SwitchState.ON:
+            self.switch_btn.setEnabled(True)
+            self._show_mask()
+            self.switch_btn.set("停止(F5)", "res/stop.png")
+        elif state == SwitchState.OFF:
+            self.switch_btn.setEnabled(True)
+            self._hide_mask()
+            self.switch_btn.set("啟動(F5)", "res/play.png")
+        elif state == SwitchState.IDLE:
+            self.switch_btn.setEnabled(False)
 
     def add_list_item(self, text: str, icon_path, stack):
         self.stack_widget.addWidget(stack)
