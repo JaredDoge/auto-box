@@ -1,6 +1,6 @@
 import asyncio
 
-from src.module.task_executor import TaskWrapper, Looper
+from src.module.looper import TaskWrapper, Looper
 from src.data.macro_model import MacroRowModel, DelayCommandModel, KeyboardCommandModel
 from src.module.log import log
 import keyboard
@@ -8,9 +8,7 @@ import keyboard
 
 class MacroTaskWrapper(TaskWrapper):
 
-    @staticmethod
-    def task_name() -> str:
-        return 'marco'
+    NAME = 'macro'
 
     def __init__(self, macro_rows: list[MacroRowModel], ):
         self.cancel = None
@@ -74,5 +72,5 @@ class MacroTaskWrapper(TaskWrapper):
         finally:
             self._release_all_key()
 
-    def get_task(self) -> asyncio.Task:
+    def run_task(self) -> asyncio.Task:
         return asyncio.create_task(self._run())

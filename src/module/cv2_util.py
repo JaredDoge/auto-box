@@ -23,17 +23,13 @@ def filter_color(img, ranges):
     return result
 
 
-def single_match(frame, template):
-    """
-    Finds the best match within FRAME.
-    :param frame:       The image in which to search for TEMPLATE.
-    :param template:    The template to match with.
-    :return:            The top-left and bottom-right positions of the best match.
-    """
-
+def single_match(frame, template, threshold=0.8):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    result = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF)
-    _, _, _, top_left = cv2.minMaxLoc(result)
+    result = cv2.matchTemplate(gray, template, cv2.TM_CCOEFF_NORMED)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+    if max_val < threshold:
+        return None
+    top_left = max_loc
     w, h = template.shape[::-1]
     bottom_right = (top_left[0] + w, top_left[1] + h)
     return top_left, bottom_right

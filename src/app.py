@@ -1,5 +1,6 @@
 import time
 
+from pytorch.machine import Machine
 from src.module.bot import Bot
 from src.module.macro.bot import MacroBot
 from src.module.signal import Signal
@@ -7,7 +8,7 @@ from src.module.switch import Switch
 from src.data.data import Data
 from src import config
 from src.gui.gui import GUI
-from src.module.task_executor import Looper
+from src.module.looper import Looper
 from src.module.window import WindowTool
 
 
@@ -28,7 +29,10 @@ def run():
         config.switch = Switch()
         config.window_tool = WindowTool()
 
-        config.task_executor = Looper()
+        config.looper = Looper()
+
+        # config.machine = Machine()
+        # config.machine.startup()
 
         # bot = Bot()
         # bot.start()

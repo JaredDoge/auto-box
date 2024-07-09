@@ -20,7 +20,6 @@ RUNE_RANGES = (
 rune_filtered = cv2_util.filter_color(cv2.imread('res/min_map/rune_template.png'), RUNE_RANGES)
 RUNE_TEMPLATE = cv2.cvtColor(rune_filtered, cv2.COLOR_BGR2GRAY)
 
-
 BAG_SPECIAL_SELECT_TAG_TEMPLATE = cv2.imread('res/bag_special_select_tag.png')
 BAG_RIGHT_BOTTOM_TEMPLATE = cv2.imread('res/bag_right_bottom.png')
 BAG_EQUIPMENT_SELECT_TAG = cv2.imread('res/bag_equipment_select_tag.png')

@@ -9,6 +9,7 @@ def single_match(frame, template_, threshold=0.8):
     gray_template = cv2.cvtColor(template_, cv2.COLOR_BGR2GRAY)
     result = cv2.matchTemplate(gray, gray_template, cv2.TM_CCOEFF_NORMED)
     match_ = np.where(result >= threshold)
+    print(match_[0].size)
     if match_[0].size <= 0:
         # 找不到匹配
         return None

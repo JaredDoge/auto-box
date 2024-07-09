@@ -15,11 +15,11 @@ class SceneMarco(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
         sw = config.switch
         if sw.is_on():
             # 停止腳本
-            self.executor.stop()
+            self.executor.cancel()
             sw.off()
         elif sw.is_off():
             # 開始腳本
-            self.executor.start(self.macro_main.get_run_list())
+            self.executor.execute(self.macro_main.get_run_list())
             sw.on()
         else:
             return
@@ -50,4 +50,4 @@ class SceneMarco(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
                }
                """)
 
-        self.executor = MacroExecutor(config.task_executor)
+        self.executor = MacroExecutor(config.looper)
