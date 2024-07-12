@@ -12,6 +12,7 @@ from PIL import Image, ImageGrab
 from src import config
 from src.module import util, cv2_util, screen
 from src.module.log import log
+from src.module.macro.macro_task import MacroTaskWrapper
 from src.module.macro.macro_util import find_minimap, get_minimap, find_rune
 from src.module.looper import TaskWrapper, Looper
 from src.module.template import MM_TL_TEMPLATE, MM_BR_TEMPLATE, PT_WIDTH, PT_HEIGHT, RUNE_RANGES, RUNE_TEMPLATE, \
@@ -93,6 +94,9 @@ async def _try_find_player(position, mm_tl, mm_br):
 
 
 class ResolveRuneTaskWrapper(TaskWrapper):
+
+    def __init__(self, macro: MacroTaskWrapper):
+        self.macro = macro
 
     @staticmethod
     def task_name() -> str:
@@ -294,5 +298,5 @@ class ResolveRuneTaskWrapper(TaskWrapper):
             keyboard.release('left')
             keyboard.release('down+alt')
 
-    def run_task(self) -> asyncio.Task:
+    def create(self) -> asyncio.Task:
         return asyncio.create_task(self._run())

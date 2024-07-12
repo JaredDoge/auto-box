@@ -23,6 +23,6 @@ class WindowTask(TaskWrapper):
         except asyncio.CancelledError:
             log('失去焦點')
 
-    def run_task(self) -> asyncio.Task:
+    def create(self) -> asyncio.Task:
         log('穿過去了')
         return asyncio.create_task(self._run())

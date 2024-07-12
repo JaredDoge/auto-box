@@ -7,10 +7,13 @@ from src.module.log import log
 from src.module.macro.macro_task import MacroTaskWrapper
 from src.module.macro.monitor_task import MonitorTaskWrapper
 from src.module.looper import Looper, TaskWrapper
+from src.module.macro.resolve_rune_task import ResolveRuneTaskWrapper
 from src.module.task_executor import TaskExecutor
+
 
 class WrapperDict(TypedDict):
     srs: Union[MonitorTaskWrapper, None]
+
 
 class MacroExecutor:
 
@@ -18,28 +21,27 @@ class MacroExecutor:
         self.is_execute = False
         self.looper = config.looper
         self.executor = TaskExecutor(self.looper)
-        self.wrapper: WrapperDict = {
-            'srs': None
-        }
 
-
-    def set(self, macro_rows: list[MacroRowModel]):
-        pass
-        # self.unset()
-        # self.wrapper[MonitorTaskWrapper.NAME] = ()
-
-    def unset(self):
-        self.wrapper.clear()
-
-    def start(self):
+    def start(self, macro_rows: list[MacroRowModel]):
         async def _start():
-            while not config.window_tool.is_foreground():
-                await asyncio.sleep(1)
-                config.window_tool.to_foreground()
-                log('等待中')
-            self.wrapper[MonitorTaskWrapper.NAME].
-            self.executor.execute(MonitorTaskWrapper.NAME, )
+            try:
+                while not config.window_tool.is_foreground():
+                    await asyncio.sleep(1)
+                    config.window_tool.to_foreground()
+                    log('等待中')
 
-        self.looper.run(_start())
+                marco = MacroTaskWrapper(macro_rows)  # 打怪腳本
+                rune = ResolveRuneTaskWrapper(marco)  # 解輪腳本
+                monitor = MonitorTaskWrapper(rune)  # 監視器腳本
+
+                # 執行監視器
+                monitor_task = monitor.create()
+                self.executor.execute(MonitorTaskWrapper.NAME, monitor_task)
+
+            except asyncio.CancelledError:
+                pass
+
+        self.executor.execute('main', asyncio.create_task(_start()))
 
     def stop(self):
+        self.executor.cancel_all()

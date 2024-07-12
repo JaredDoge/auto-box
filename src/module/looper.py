@@ -6,7 +6,7 @@ from abc import ABC, abstractmethod
 class TaskWrapper(ABC):
 
     @abstractmethod
-    def run_task(self, *args, **kwarg) -> asyncio.Task:
+    def create(self, *args, **kwarg) -> asyncio.Task:
         pass
 
 

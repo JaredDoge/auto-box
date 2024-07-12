@@ -72,5 +72,5 @@ class MacroTaskWrapper(TaskWrapper):
         finally:
             self._release_all_key()
 
-    def run_task(self) -> asyncio.Task:
+    def create(self) -> asyncio.Task:
         return asyncio.create_task(self._run())
