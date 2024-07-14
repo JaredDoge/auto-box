@@ -48,15 +48,14 @@ class MacroTaskWrapper(TaskWrapper):
                     await asyncio.sleep(command.time)
                 elif isinstance(command, KeyboardCommandModel):
                     if command.event_type == 'down':
-                        pass
-                        # keyboard.press(command.event_name)
+                        keyboard.press(command.event_name)
                         # log(f"按下 {command.event_name}")
                     elif command.event_type == 'up':
                         pass
-                        # keyboard.release(command.event_name)
+                        keyboard.release(command.event_name)
                         # log(f"抬起 {command.event_name}")
             count -= 1
-            log(f"間隔 {macro_row.interval} 秒")
+            # log(f"間隔 {macro_row.interval} 秒")
             await asyncio.sleep(macro_row.interval)
 
     async def _run(self):

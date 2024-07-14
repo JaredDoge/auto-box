@@ -1,3 +1,4 @@
+import asyncio
 import time
 
 from pytorch.machine import Machine
@@ -15,6 +16,11 @@ from src.module.window import WindowTool
 def cleanup():
     # config.macro_bot.stop()
     config.signal.unhook()
+    config.machine.cleanup()
+
+
+async def _startup():
+    await config.machine.startup()
 
 
 def run():
@@ -31,8 +37,8 @@ def run():
 
         config.looper = Looper()
 
-        # config.machine = Machine()
-        # config.machine.startup()
+        config.machine = Machine()
+        asyncio.run(_startup())
 
         # bot = Bot()
         # bot.start()

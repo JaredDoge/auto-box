@@ -12,17 +12,19 @@ class TaskExecutor:
     def is_running(self, name: str):
         return name in self.tasks
 
-    def execute(self, name: str, task: asyncio.Task):
+    def execute(self, name: str, task):
         if self.is_running(name):
             return
+        self.looper.run(task)
         task.add_done_callback(self._remove_task(name))
         self.tasks[name] = task
-        self.looper.run(task)
+
 
     def _remove_task(self, name: str):
         def callback(_):
             print(f"Task {name} done, removing from tasks.")
             self.tasks.pop(name, None)
+
         return callback
 
     async def _cancel_task(self, name: str):

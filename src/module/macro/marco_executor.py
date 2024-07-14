@@ -24,24 +24,19 @@ class MacroExecutor:
 
     def start(self, macro_rows: list[MacroRowModel]):
         async def _start():
-            try:
-                while not config.window_tool.is_foreground():
-                    await asyncio.sleep(1)
-                    config.window_tool.to_foreground()
-                    log('等待中')
+            while not config.window_tool.is_foreground():
+                await asyncio.sleep(1)
+                config.window_tool.to_foreground()
+                log('等待中')
+            log('準備開始run')
+            marco = MacroTaskWrapper(macro_rows)  # 打怪腳本
+            rune = ResolveRuneTaskWrapper(marco)  # 解輪腳本
+            monitor = MonitorTaskWrapper(self.executor, rune, marco)  # 監視器腳本
 
-                marco = MacroTaskWrapper(macro_rows)  # 打怪腳本
-                rune = ResolveRuneTaskWrapper(marco)  # 解輪腳本
-                monitor = MonitorTaskWrapper(rune)  # 監視器腳本
+            # 執行監視器
+            self.executor.execute(MonitorTaskWrapper.NAME, monitor.create())
 
-                # 執行監視器
-                monitor_task = monitor.create()
-                self.executor.execute(MonitorTaskWrapper.NAME, monitor_task)
-
-            except asyncio.CancelledError:
-                pass
-
-        self.executor.execute('main', asyncio.create_task(_start()))
+        self.looper.run(_start())
 
     def stop(self):
         self.executor.cancel_all()

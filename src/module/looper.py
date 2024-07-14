@@ -21,5 +21,11 @@ class Looper:
         asyncio.set_event_loop(self.loop)
         self.loop.run_forever()
 
-    def run(self, task):
-        asyncio.run_coroutine_threadsafe(task, self.loop)
+    def stop(self):
+        self.loop.stop()
+
+    def create_task(self, coroutine):
+        self.loop.create_task(coroutine)
+
+    def run(self, coroutine):
+        asyncio.run_coroutine_threadsafe(coroutine, self.loop)

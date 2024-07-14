@@ -5,24 +5,68 @@
             {
                 "name": "左右走",
                 "count": -1,
-                "interval": 5.0,
+                "interval": 1.0,
                 "run": true,
                 "commands": [
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "right",
+                        "event_name": "alt",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.06,
+                        "time": 0.1,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "right",
+                        "event_name": "alt",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.08,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "alt",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "alt",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.11,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "c",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.11,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "c",
                         "__type": "KeyboardCommandModel"
                     }
                 ]

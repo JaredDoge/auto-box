@@ -11,13 +11,15 @@ user32 = ctypes.windll.user32
 user32.SetProcessDPIAware()
 
 
+# maplehwnd = win32gui.FindWindow(None, "菇菇谷")
+# position = win32gui.GetWindowRect(maplehwnd)
 class WindowTool:
 
     def __init__(self):
         mss.windows.CAPTUREBLT = 0
 
     def _handle(self):
-        return user32.FindWindowW(None, '菇菇谷')
+        return user32.FindWindowW(None, '永恆谷')
 
     def is_foreground(self):
         return self._handle() == user32.GetForegroundWindow()
@@ -43,3 +45,4 @@ class WindowTool:
             if frame is None:
                 await asyncio.sleep(1)
                 continue
+            return frame

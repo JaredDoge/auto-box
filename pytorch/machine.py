@@ -1,5 +1,7 @@
 import cv2
 from time import perf_counter
+
+
 from pytorch.tool.torch_utils import do_detect
 from pytorch.tool.darknet2pytorch import Darknet
 from pydantic import BaseModel
@@ -19,24 +21,32 @@ class Machine:
         self.m = None
         self.class_names = None
 
-    def startup(self):
+    def cleanup(self):
+        if self.m is not None:
+            pass
+            # 如果Darknet类有释放资源的方法，调用它
+            # self.m.release()
+            # self.m = None
+            # 清理CUDA缓存（如果有的话）
+            # torch.cuda.empty_cache()
+
+    async def startup(self):
         self.m = Darknet('pytorch/yolov4-mish-416.cfg')
         self.m.print_network()
         self.m.load_weights('pytorch/yolov4-mish-416_last.weights')
+        # self.m.cuda()
 
-        self.m.cuda()
-
-        num_classes = self.m.num_classes
-        if num_classes == 20:
-            names_file = 'pytorch/data/voc.names'
-        elif num_classes == 80:
-            names_file = 'pytorch/data/coco.names'
-        else:
-            names_file = 'pytorch/data/x.names'
-        self.class_names = load_class_names(names_file)
-
-        self.channel = 30
-        self.confirmation = True
+        # num_classes = self.m.num_classes
+        # if num_classes == 20:
+        #     names_file = 'pytorch/data/voc.names'
+        # elif num_classes == 80:
+        #     names_file = 'pytorch/data/coco.names'
+        # else:
+        #     names_file = 'pytorch/data/x.names'
+        # self.class_names = load_class_names(names_file)
+        #
+        # self.channel = 30
+        # self.confirmation = True
 
     def predict(self, img):
         print(img)
