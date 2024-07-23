@@ -12,6 +12,7 @@ AGAIN_TEMPLATE = cv2.imread('res/again.png')
 MM_TL_TEMPLATE = cv2.imread('res/min_map/minimap_tl_template.png', 0)
 MM_BR_TEMPLATE = cv2.imread('res/min_map/minimap_br_template.png', 0)
 PLAYER_TEMPLATE = cv2.imread('res/min_map/player_template.png', 0)
+RUNE_BUFF_TEMPLATE = cv2.imread('res/min_map/rune_buff_template.jpg', 0)
 PT_HEIGHT, PT_WIDTH = PLAYER_TEMPLATE.shape
 
 RUNE_RANGES = (

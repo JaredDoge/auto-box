@@ -19,7 +19,7 @@ class WindowTool:
         mss.windows.CAPTUREBLT = 0
 
     def _handle(self):
-        return user32.FindWindowW(None, '永恆谷')
+        return user32.FindWindowW(None, '梓凝谷')
 
     def is_foreground(self):
         return self._handle() == user32.GetForegroundWindow()

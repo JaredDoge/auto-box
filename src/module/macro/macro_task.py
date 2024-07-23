@@ -1,4 +1,6 @@
 import asyncio
+import threading
+from typing import Callable
 
 from src.module.looper import TaskWrapper, Looper
 from src.data.macro_model import MacroRowModel, DelayCommandModel, KeyboardCommandModel
@@ -11,16 +13,9 @@ class MacroTaskWrapper(TaskWrapper):
     NAME = 'macro'
 
     def __init__(self, macro_rows: list[MacroRowModel], ):
-        self.cancel = None
-        self.finish = None
         self.macro_rows = macro_rows
         self.all_down_keys = set()
-
         self._prepare_all_down_keys(macro_rows)
-
-    def call_back(self, finish, cancel):
-        self.finish = finish
-        self.cancel = cancel
 
     def _prepare_all_down_keys(self, macro_rows: list):
         self.all_down_keys.clear()
@@ -34,42 +29,33 @@ class MacroTaskWrapper(TaskWrapper):
             keyboard.release(key)
 
     async def _player(self, macro_row: MacroRowModel):
+        log(threading.current_thread().name)
         count = macro_row.count
 
         while count != 0:
             for command in macro_row.commands:
-                # if self.executor.check_stop_condition():
-                #     self._release_all_key()
-                #     self.executor.stop_all_task()
-                #     return
-
                 if isinstance(command, DelayCommandModel):
                     log(f"延遲 {command.time} 秒")
                     await asyncio.sleep(command.time)
                 elif isinstance(command, KeyboardCommandModel):
                     if command.event_type == 'down':
                         keyboard.press(command.event_name)
-                        # log(f"按下 {command.event_name}")
+                        log(f"按下 {command.event_name}")
                     elif command.event_type == 'up':
                         pass
                         keyboard.release(command.event_name)
-                        # log(f"抬起 {command.event_name}")
+                        log(f"抬起 {command.event_name}")
             count -= 1
-            # log(f"間隔 {macro_row.interval} 秒")
+            log(f"間隔 {macro_row.interval} 秒")
             await asyncio.sleep(macro_row.interval)
 
-    async def _run(self):
-        log(f"開始執行")
+    async def create(self, done: Callable):
+        log(f"開始執行打怪腳本")
         try:
             tasks = [self._player(macro_row) for macro_row in self.macro_rows]
             await asyncio.gather(*tasks)
-            if self.finish:
-                self.finish()
+            done()
         except asyncio.CancelledError:
-            if self.cancel:
-                self.cancel()
+            log('取消打怪腳本')
         finally:
             self._release_all_key()
-
-    def create(self) -> asyncio.Task:
-        return asyncio.create_task(self._run())

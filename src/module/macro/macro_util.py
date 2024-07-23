@@ -4,7 +4,7 @@ from src import config
 from src.module import cv2_util
 from src.module.log import log
 from src.module.template import MM_TL_TEMPLATE, MM_BR_TEMPLATE, PT_WIDTH, PT_HEIGHT, RUNE_RANGES, RUNE_TEMPLATE, \
-    PLAYER_TEMPLATE
+    PLAYER_TEMPLATE, RUNE_BUFF_TEMPLATE
 
 # The distance between the top of the minimap and the top of the screen
 MINIMAP_TOP_BORDER = 5
@@ -26,6 +26,12 @@ def find_rune(minimap):
     return None
 
 
+def find_rune_buff(full):
+    return cv2_util.multi_match(full[:full.shape[0] // 8, :],
+                                RUNE_BUFF_TEMPLATE,
+                                threshold=0.9)
+
+
 def find_player(minimap):
     player = cv2_util.multi_match(minimap, PLAYER_TEMPLATE, threshold=0.8)
     if player:
@@ -39,7 +45,7 @@ async def find_minimap():
         frame = await config.window_tool.get_game_screen()
 
         tl, _ = cv2_util.single_match(frame, MM_TL_TEMPLATE)
-        _, br = cv2_util.single_match(frame, MM_BR_TEMPLATE,0.5)
+        _, br = cv2_util.single_match(frame, MM_BR_TEMPLATE, 0.5)
 
         if tl is None or br is None:
             log("找不到小地圖")

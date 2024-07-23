@@ -1,6 +1,7 @@
 import asyncio
 
 from src import config
+from src.module.log import log
 from src.module.macro.macro_task import MacroTaskWrapper
 from src.module.macro.macro_util import find_minimap, get_minimap, find_rune, find_player
 from src.module.looper import TaskWrapper, Looper
@@ -19,7 +20,11 @@ class MonitorTaskWrapper(TaskWrapper):
         self.resolve_rune = resolve_rune
         self.macro = macro
 
-    async def _run(self, ):
+    async def create(self):
+        while not config.window_tool.is_foreground():
+            await asyncio.sleep(1)
+            config.window_tool.to_foreground()
+            log('等待中')
         # try:
         # 找小地圖位置
         mm_tl, mm_br = await find_minimap()
@@ -61,6 +66,3 @@ class MonitorTaskWrapper(TaskWrapper):
 
     def cancel_current_task(self):
         self.executor.cancel(self.current_task)
-
-    def create(self) -> asyncio.Task:
-        return asyncio.create_task(self._run())

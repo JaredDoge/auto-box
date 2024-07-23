@@ -15,6 +15,18 @@ def capture(window):
         return _screenshot(sct)
 
 
+def capture_rgb(window):
+    def _screenshot(s):
+        try:
+            return np.array(s.grab(window))[:, :, :3]
+        except mss.exception.ScreenShotError:
+            print('ScreenShotError.')
+            return None
+
+    with mss.mss() as sct:
+        return _screenshot(sct)
+
+
 def show_frame(frame):
     if frame is not None:
         cv2.imshow('Screenshot', frame)

@@ -34,7 +34,7 @@ class Machine:
         self.m = Darknet('pytorch/yolov4-mish-416.cfg')
         self.m.print_network()
         self.m.load_weights('pytorch/yolov4-mish-416_last.weights')
-        # self.m.cuda()
+        self.m.cuda()
 
         # num_classes = self.m.num_classes
         # if num_classes == 20:
@@ -49,9 +49,8 @@ class Machine:
         # self.confirmation = True
 
     def predict(self, img):
-        print(img)
         now = perf_counter()
-        # img = np.array(data)
+        # img = np.array(img)
         img = img.reshape((228, 576, 3)).astype('uint8')
         sized = cv2.resize(img, (416, 416))
         # print(img.shape)

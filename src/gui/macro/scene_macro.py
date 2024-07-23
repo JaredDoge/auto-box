@@ -6,7 +6,12 @@ from src import config
 from src.gui.common.widget_abc_meta import SwitchListener, QWidgetABCMeta
 from src.gui.macro.main.macro_main import MacroMain
 from src.module.log import log
+from src.module.looper import Looper
 from src.module.macro.marco_executor import MacroExecutor
+
+
+def _already_stop():
+    config.switch.off()
 
 
 class SceneMarco(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
@@ -16,11 +21,12 @@ class SceneMarco(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
         if sw.is_on():
             # 停止腳本
             self.executor.stop()
-            sw.off()
+            sw.idle()
         elif sw.is_off():
             # 開始腳本
             self.executor.start(self.macro_main.get_run_list())
             sw.on()
+
         else:
             return
 
@@ -51,3 +57,4 @@ class SceneMarco(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
                """)
 
         self.executor = MacroExecutor()
+        self.executor.set_stop_callback(_already_stop)
