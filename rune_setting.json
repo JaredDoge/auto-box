@@ -1,0 +1,9 @@
+{
+  "right": "right",
+  "left": "left",
+  "up": "up",
+  "down": "down",
+  "jump_off": "down+alt",
+  "rope": "e",
+  "collect": "space"
+}

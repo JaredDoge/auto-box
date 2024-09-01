@@ -3,7 +3,6 @@ import ctypes
 import threading
 
 import keyboard
-from pygetwindow import getWindowsWithTitle
 
 from src.data.macro_model import MacroRowModel, DelayCommandModel, KeyboardCommandModel
 from src.module.log import log

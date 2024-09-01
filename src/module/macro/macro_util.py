@@ -1,10 +1,12 @@
 import asyncio
 
+import cv2
+
 from src import config
 from src.module import cv2_util
 from src.module.log import log
 from src.module.template import MM_TL_TEMPLATE, MM_BR_TEMPLATE, PT_WIDTH, PT_HEIGHT, RUNE_RANGES, RUNE_TEMPLATE, \
-    PLAYER_TEMPLATE, RUNE_BUFF_TEMPLATE
+    PLAYER_TEMPLATE, RUNE_BUFF_TEMPLATE, PLAYER_RANGES, PLAYER_TEMPLATE_2
 
 # The distance between the top of the minimap and the top of the screen
 MINIMAP_TOP_BORDER = 5
@@ -36,6 +38,15 @@ def find_player(minimap):
     player = cv2_util.multi_match(minimap, PLAYER_TEMPLATE, threshold=0.8)
     if player:
         return player[0]
+    return None
+
+
+def find_player2(minimap):
+    filtered = cv2_util.filter_color(minimap, PLAYER_RANGES)
+    matches = cv2_util.multi_match(filtered, PLAYER_TEMPLATE_2, threshold=0.9)
+    if matches:
+        # 找到人物
+        return matches[0][0], matches[0][1]
     return None
 
 

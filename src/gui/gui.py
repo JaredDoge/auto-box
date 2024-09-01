@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QLabel
 
 from src import config
 from src.gui.macro.scene_macro import SceneMarco, SwitchListener
+from src.gui.monster.scene_monster import SceneMonster
 from src.gui.scene_attach_box import SceneAttachBox
 from src.module.log import log
 from src.module.macro.macro_task import MacroTaskWrapper
@@ -159,6 +160,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.add_list_item("巨集", "res/main_tab/tab_script.png", macro)
         self.switch_listener.append(macro)
 
+        monster = SceneMonster()
+        self.add_list_item("萌獸", "res/main_tab/tab_monster_box.png", monster)
+        self.switch_listener.append(monster)
         # 啟動鈕
         config.signal.add_listener(self._hotkey)
         self.switch_btn.set_click_listener(self._switch)
@@ -192,11 +196,11 @@ class MainWindow(QtWidgets.QMainWindow):
         if state == SwitchState.ON:
             self.switch_btn.setEnabled(True)
             self._show_mask()
-            self.switch_btn.set("停止(F5)", "res/stop.png")
+            self.switch_btn.set("停止(F4)", "res/stop.png")
         elif state == SwitchState.OFF:
             self.switch_btn.setEnabled(True)
             self._hide_mask()
-            self.switch_btn.set("啟動(F5)", "res/play.png")
+            self.switch_btn.set("啟動(F4)", "res/play.png")
         elif state == SwitchState.IDLE:
             self.switch_btn.setEnabled(False)
 

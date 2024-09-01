@@ -1,13 +1,18 @@
 from dataclasses import dataclass, field
-from typing import List, Union, Optional, TypeAlias
+from typing import Union, TypeAlias
 from dataclasses_json import dataclass_json
-
 
 @dataclass_json
 @dataclass
 class CommandModelBase:
     command: str
 
+@dataclass_json
+@dataclass
+class HorizontalBorderCommandModel(CommandModelBase):
+    command: str = field(init=False, default='horizontal_border')
+    operator: str
+    ratio: float
 
 @dataclass_json
 @dataclass
@@ -24,7 +29,7 @@ class KeyboardCommandModel(CommandModelBase):
     event_name: str
 
 
-CommandModel: TypeAlias = Union[DelayCommandModel, KeyboardCommandModel]
+CommandModel: TypeAlias = Union[DelayCommandModel, KeyboardCommandModel, HorizontalBorderCommandModel]
 
 
 @dataclass_json

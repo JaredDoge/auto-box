@@ -79,7 +79,7 @@
             {
                 "name": "左右走",
                 "count": -1,
-                "interval": 0.1,
+                "interval": 0.2,
                 "run": true,
                 "commands": [
                     {
@@ -94,10 +94,9 @@
                         "__type": "KeyboardCommandModel"
                     },
                     {
-                        "command": "horizontal_border",
-                        "operator": "lt",
-                        "ratio": "0.15",
-                        "__type": "HorizontalBorderCommandModel"
+                        "command": "delay",
+                        "time": 5.5,
+                        "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
@@ -106,16 +105,20 @@
                         "__type": "KeyboardCommandModel"
                     },
                     {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
                         "command": "keyboard",
                         "event_type": "down",
                         "event_name": "right",
                         "__type": "KeyboardCommandModel"
                     },
                     {
-                        "command": "horizontal_border",
-                        "operator": "gt",
-                        "ratio": "0.85",
-                        "__type": "HorizontalBorderCommandModel"
+                        "command": "delay",
+                        "time": 5.5,
+                        "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",

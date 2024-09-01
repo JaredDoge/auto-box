@@ -1,18 +1,22 @@
 import asyncio
+import operator
 import threading
 from typing import Callable
 
 from src.module.looper import TaskWrapper, Looper
-from src.data.macro_model import MacroRowModel, DelayCommandModel, KeyboardCommandModel
+from src.data.macro_model import MacroRowModel, DelayCommandModel, KeyboardCommandModel, HorizontalBorderCommandModel
 from src.module.log import log
 import keyboard
+
+from src.module.macro.frame_provider import FrameProvider
 
 
 class MacroTaskWrapper(TaskWrapper):
 
     NAME = 'macro'
 
-    def __init__(self, macro_rows: list[MacroRowModel], ):
+    def __init__(self, macro_rows: list[MacroRowModel], frame_provider: FrameProvider):
+        self.frame_provider = frame_provider
         self.macro_rows = macro_rows
         self.all_down_keys = set()
         self._prepare_all_down_keys(macro_rows)
@@ -29,33 +33,50 @@ class MacroTaskWrapper(TaskWrapper):
             keyboard.release(key)
 
     async def _player(self, macro_row: MacroRowModel):
-        log(threading.current_thread().name)
         count = macro_row.count
 
         while count != 0:
             for command in macro_row.commands:
                 if isinstance(command, DelayCommandModel):
-                    log(f"延遲 {command.time} 秒")
+                    # log(f"延遲 {command.time} 秒")
                     await asyncio.sleep(command.time)
                 elif isinstance(command, KeyboardCommandModel):
                     if command.event_type == 'down':
                         keyboard.press(command.event_name)
-                        log(f"按下 {command.event_name}")
+                        # log(f"按下 {command.event_name}")
                     elif command.event_type == 'up':
-                        pass
                         keyboard.release(command.event_name)
-                        log(f"抬起 {command.event_name}")
+                        # log(f"抬起 {command.event_name}")
+                elif isinstance(command, HorizontalBorderCommandModel):
+                    def _get_op(op: str):
+                        if op == 'gt':
+                            return operator.gt
+                        elif op == 'lt':
+                            return operator.lt
+                        elif op == 'ge':
+                            return operator.ge
+                        elif op == 'le':
+                            return operator.le
+
+                    while True:
+                        frame = self.frame_provider.get_frame()
+                        minimap = frame['minimap']
+                        player_x = minimap['player'][0]
+                        target_x = minimap['width'] * command.ratio
+                        if _get_op(command.operator)(player_x, target_x):
+                            break
+                        await asyncio.sleep(0.1)
+
             count -= 1
-            log(f"間隔 {macro_row.interval} 秒")
+            # log(f"間隔 {macro_row.interval} 秒")
             await asyncio.sleep(macro_row.interval)
 
     async def create(self, done: Callable):
-        log(f"開始執行打怪腳本")
         try:
             tasks = [self._player(macro_row) for macro_row in self.macro_rows]
             await asyncio.gather(*tasks)
             done()
         except asyncio.CancelledError:
-            log('取消打怪腳本')
+            pass
         finally:
             self._release_all_key()

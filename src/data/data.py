@@ -5,6 +5,7 @@ from typing import List
 from dataclasses_json import dataclass_json
 
 from src.data.macro_model import MacroGroupModel
+from src.data.rune_model import RuneSettingModel
 from src.module.cv import cv_imread
 
 
@@ -50,6 +51,7 @@ class Data:
         self._tabs = self._to_dataclass(self.load_json("attach_tabs.json"), TabModel)
         self._setting = self._to_dataclass(self.load_json("setting.json", '{}'), SettingModel, many=False)
         self._macro_groups = self._to_dataclass(self.load_json("macro_groups.json"), MacroGroupModel)
+        self._rune_setting = self._to_dataclass(self.load_json("rune_setting.json", '{}'), RuneSettingModel, many=False)
         self._base = self._to_dataclass(self.load_json("base.json", '{}'), BaseModel, many=False)
         self._templates = {a.name: cv_imread(a.path) for a in self._attrs if os.path.exists(a.path)}
         self.set_base(self._base)
@@ -73,22 +75,22 @@ class Data:
 
     def set_attrs(self, attrs):
         self._attrs = attrs
-        with open("attrs.json", "w",  encoding='utf-8') as json_file:
+        with open("attrs.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(attrs, AttrModel))
 
     def set_tabs(self, tabs):
         self._tabs = tabs
-        with open("attach_tabs.json", "w",  encoding='utf-8') as json_file:
+        with open("attach_tabs.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(tabs, TabModel))
 
     def set_macro_groups(self, macro_groups):
         self._macro_groups = macro_groups
-        with open("macro_groups.json", "w",  encoding='utf-8') as json_file:
+        with open("macro_groups.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(macro_groups, MacroGroupModel))
 
     def set_setting(self, setting):
         self._setting = setting
-        with open("setting.json", "w",  encoding='utf-8') as json_file:
+        with open("setting.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(setting, SettingModel, many=False))
 
     def set_base(self, base):
@@ -116,3 +118,11 @@ class Data:
 
     def get_base(self):
         return self._base
+
+    def set_rune_setting(self, setting):
+        self._rune_setting = setting
+        with open("rune_setting.json", "w", encoding='utf-8') as json_file:
+            json_file.write(self._to_json(setting, RuneSettingModel, many=False))
+
+    def get_rune_setting(self):
+        return self._rune_setting

@@ -82,7 +82,6 @@ def template(img, template_, template_threshold=0.8):
     template_img = cv2.cvtColor(template_, cv2.COLOR_BGR2GRAY)
     h, w = template_img.shape[:2]
     res = cv2.matchTemplate(img_gray, template_img, cv2.TM_CCOEFF_NORMED)
-    start_time = time.time()
     loc = np.where(res >= template_threshold)  # 大于模板阈值的目标坐标
     score = res[res >= template_threshold]  # 大于模板阈值的目标置信度
     # 将模板数据坐标进行处理成左上角、右下角的格式
