@@ -61,10 +61,12 @@ class MacroTaskWrapper(TaskWrapper):
                     while True:
                         frame = self.frame_provider.get_frame()
                         minimap = frame['minimap']
-                        player_x = minimap['player'][0]
-                        target_x = minimap['width'] * command.ratio
-                        if _get_op(command.operator)(player_x, target_x):
-                            break
+                        player = minimap['player']
+                        if player:
+                            player_x = player[0]
+                            target_x = minimap['width'] * command.ratio
+                            if _get_op(command.operator)(player_x, target_x):
+                                break
                         await asyncio.sleep(0.1)
 
             count -= 1
