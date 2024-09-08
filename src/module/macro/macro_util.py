@@ -6,7 +6,8 @@ from src import config
 from src.module import cv2_util
 from src.module.log import log
 from src.module.template import MM_TL_TEMPLATE, MM_BR_TEMPLATE, PT_WIDTH, PT_HEIGHT, RUNE_RANGES, RUNE_TEMPLATE, \
-    PLAYER_TEMPLATE, RUNE_BUFF_TEMPLATE, PLAYER_RANGES, PLAYER_TEMPLATE_2
+    PLAYER_TEMPLATE, RUNE_BUFF_TEMPLATE, PLAYER_RANGES, PLAYER_TEMPLATE_2, RUNE_LOCK_BUFF_TEMPLATE_P1, \
+    RUNE_LOCK_BUFF_TEMPLATE_P2
 
 # The distance between the top of the minimap and the top of the screen
 MINIMAP_TOP_BORDER = 5
@@ -26,6 +27,18 @@ def find_rune(minimap):
         # 找到地圖輪了
         return matches[0][0], matches[0][1]
     return None
+
+
+def find_rune_lock_buff_p1(full):
+    return cv2_util.multi_match(full[:full.shape[0] // 8, :],
+                                RUNE_LOCK_BUFF_TEMPLATE_P1,
+                                threshold=0.9)
+
+
+def find_rune_lock_buff_p2(full):
+    return cv2_util.multi_match(full[:full.shape[0] // 8, :],
+                                RUNE_LOCK_BUFF_TEMPLATE_P2,
+                                threshold=0.9)
 
 
 def find_rune_buff(full):

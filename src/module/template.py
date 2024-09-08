@@ -23,6 +23,9 @@ PT_HEIGHT, PT_WIDTH = PLAYER_TEMPLATE.shape
 
 RUNE_BUFF_TEMPLATE = cv2.imread('res/min_map/rune_buff_template.jpg', 0)
 
+RUNE_LOCK_BUFF_TEMPLATE_P1 = cv2.imread('res/min_map/rune_lock_buff_p1.png', 0)
+RUNE_LOCK_BUFF_TEMPLATE_P2 = cv2.imread('res/min_map/rune_lock_buff_p2.png', 0)
+
 RUNE_RANGES = (
     ((141, 148, 245), (146, 158, 255)),
 )

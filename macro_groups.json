@@ -6,7 +6,7 @@
                 "name": "經驗技能",
                 "count": -1,
                 "interval": 10.0,
-                "run": true,
+                "run": false,
                 "commands": [
                     {
                         "command": "keyboard",
@@ -386,7 +386,7 @@
             {
                 "name": "繩索",
                 "count": -1,
-                "interval": 8.0,
+                "interval": 4.0,
                 "run": true,
                 "commands": [
                     {
@@ -494,7 +494,7 @@
                 "name": "經驗水",
                 "count": -1,
                 "interval": 1000.0,
-                "run": true,
+                "run": false,
                 "commands": [
                     {
                         "command": "keyboard",
@@ -541,7 +541,7 @@
                 "name": "箭座",
                 "count": -1,
                 "interval": 15.0,
-                "run": false,
+                "run": true,
                 "commands": [
                     {
                         "command": "keyboard",

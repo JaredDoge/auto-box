@@ -3,21 +3,22 @@ import time
 from abc import ABC
 from typing import Dict, TypedDict, Union, Callable
 
+import cv2
+
 from src import config
 from src.data.macro_model import MacroRowModel
 from src.module.log import log
 from src.module.macro.frame_provider import FrameProvider
 from src.module.macro.macro_task import MacroTaskWrapper
-from src.module.macro.macro_util import find_minimap, get_minimap, find_rune, find_player2
+from src.module.macro.macro_util import find_minimap, get_minimap, find_rune, find_player2, find_rune_lock_buff_p1, find_rune_lock_buff_p2
 from src.module.macro.resolve_rune_task import ResolveRuneTaskWrapper
-from src.module.task_executor import TaskExecutor
 
 
 class MacroExecutor(FrameProvider):
     def get_frame(self):
         return self.frame
 
-    _INTERVAL = 0.1
+    _INTERVAL = 0.2
 
     def __init__(self):
         self.looper = config.looper
@@ -75,10 +76,39 @@ class MacroExecutor(FrameProvider):
                     }
                 }
 
+
+                # log(lock)
+                # if lock:
+                    # 获取目标位置
+                    # x, y = lock[0][0], lock[0][1]
+
+                    # # 设定矩形框的大小
+                    # box_size = 50  # 矩形框的宽高，例如 50x50 像素
+                    # half_size = box_size // 2
+                    #
+                    # # 定义矩形框的坐标
+                    # top_left = (x - half_size, y - half_size)
+                    # bottom_right = (x + half_size, y + half_size)
+                    #
+                    # # 绘制绿色矩形框
+                    #
+                    # cv2.rectangle(full, top_left, bottom_right, (0, 255, 0), 2)
+                    #
+                    # # 可选：绘制中心点标记（例如一个小圆圈）
+                    # cv2.circle(full, (x, y), 5, (0, 255, 0), -1)  # -1 表示填充圆圈
+                    #
+                    # # 显示图像
+                    # cv2.imshow('Minimap with Target', full)
+                    # cv2.waitKey(0)
+                    # cv2.destroyAllWindows()
+
+                    # continue
+
                 if self.current_task and self.current_task.get_name() == resolve_rune.NAME:
                     await asyncio.sleep(self._INTERVAL)
                     continue
-                if rune and player:
+
+                if rune and player and not find_rune_lock_buff_p1(full) and not find_rune_lock_buff_p2(full):
                     await self._cancel(self.current_task)
                     task = self.looper.run_task(resolve_rune.create(_resole_rune_done, rune, mm_tl, mm_br))
                     task.set_name(resolve_rune.NAME)
