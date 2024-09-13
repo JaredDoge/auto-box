@@ -75,6 +75,7 @@ class MacroExecutor(FrameProvider):
                         'player': player
                     }
                 }
+                log(f"player: {player}, rune: {rune}")
 
 
                 # log(lock)

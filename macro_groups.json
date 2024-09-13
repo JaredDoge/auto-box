@@ -3,89 +3,15 @@
         "name": "測試",
         "macros": [
             {
-                "name": "經驗技能",
+                "name": "輪迴",
                 "count": -1,
-                "interval": 10.0,
-                "run": false,
-                "commands": [
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "]",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.12,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "]",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.15,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "[",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.11,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "[",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.16,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "p",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.11,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "p",
-                        "__type": "KeyboardCommandModel"
-                    }
-                ]
-            },
-            {
-                "name": "跳打",
-                "count": -1,
-                "interval": 0.5,
+                "interval": 90.0,
                 "run": true,
                 "commands": [
                     {
-                        "command": "delay",
-                        "time": 0.1,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "alt",
+                        "event_name": "f5",
                         "__type": "KeyboardCommandModel"
                     },
                     {
@@ -96,18 +22,18 @@
                     {
                         "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "alt",
+                        "event_name": "f5",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.07,
+                        "time": 0.51,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "alt",
+                        "event_name": "f5",
                         "__type": "KeyboardCommandModel"
                     },
                     {
@@ -118,83 +44,7 @@
                     {
                         "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "alt",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.1,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "c",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.1,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "c",
-                        "__type": "KeyboardCommandModel"
-                    }
-                ]
-            },
-            {
-                "name": "左右走",
-                "count": -1,
-                "interval": 0.1,
-                "run": true,
-                "commands": [
-                    {
-                        "command": "delay",
-                        "time": 0.1,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "left",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "horizontal_border",
-                        "operator": "lt",
-                        "ratio": 0.2,
-                        "__type": "HorizontalBorderCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "left",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.1,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "right",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "horizontal_border",
-                        "operator": "gt",
-                        "ratio": 0.8,
-                        "__type": "HorizontalBorderCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "right",
+                        "event_name": "f5",
                         "__type": "KeyboardCommandModel"
                     }
                 ]
@@ -384,9 +234,83 @@
                 ]
             },
             {
+                "name": "跳打",
+                "count": -1,
+                "interval": 0.5,
+                "run": true,
+                "commands": [
+                    {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "alt",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "alt",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.07,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "alt",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "alt",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "c",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "c",
+                        "__type": "KeyboardCommandModel"
+                    }
+                ]
+            },
+            {
                 "name": "繩索",
                 "count": -1,
-                "interval": 4.0,
+                "interval": 8.0,
                 "run": true,
                 "commands": [
                     {
@@ -414,48 +338,26 @@
                 ]
             },
             {
-                "name": "輪迴",
+                "name": "箭座",
                 "count": -1,
-                "interval": 90.0,
-                "run": true,
+                "interval": 15.0,
+                "run": false,
                 "commands": [
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "f5",
+                        "event_name": "shift+space",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.1,
+                        "time": 0.2,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "f5",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.51,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "f5",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.1,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "f5",
+                        "event_name": "shift+space",
                         "__type": "KeyboardCommandModel"
                     }
                 ]
@@ -491,103 +393,55 @@
                 ]
             },
             {
-                "name": "經驗水",
+                "name": "左右走",
                 "count": -1,
-                "interval": 1000.0,
-                "run": false,
-                "commands": [
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "'",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.13,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "'",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.2,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": ";",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.09,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": ";",
-                        "__type": "KeyboardCommandModel"
-                    }
-                ]
-            },
-            {
-                "name": "箭座",
-                "count": -1,
-                "interval": 15.0,
+                "interval": 0.1,
                 "run": true,
                 "commands": [
                     {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "shift+space",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
                         "command": "delay",
-                        "time": 0.2,
+                        "time": 0.1,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "shift+space",
+                        "event_type": "down",
+                        "event_name": "left",
                         "__type": "KeyboardCommandModel"
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        "name": "案9",
-        "macros": [
-            {
-                "name": "9",
-                "count": -1,
-                "interval": 0.5,
-                "run": true,
-                "commands": [
+                    },
+                    {
+                        "command": "horizontal_border",
+                        "operator": "lt",
+                        "ratio": 0.2,
+                        "__type": "HorizontalBorderCommandModel"
+                    },
                     {
                         "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "9",
+                        "event_type": "up",
+                        "event_name": "left",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.09,
+                        "time": 0.1,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "right",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "horizontal_border",
+                        "operator": "gt",
+                        "ratio": 0.8,
+                        "__type": "HorizontalBorderCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "9",
+                        "event_name": "right",
                         "__type": "KeyboardCommandModel"
                     }
                 ]
@@ -606,29 +460,62 @@
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "]",
+                        "event_name": "left",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.1,
+                        "time": 0.09,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "]",
+                        "event_name": "left",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.13,
+                        "time": 0.09,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "[",
+                        "event_name": "left",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.08,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "left",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.21,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "enter",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.07,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "enter",
                         "__type": "KeyboardCommandModel"
                     },
                     {
@@ -638,30 +525,19 @@
                     },
                     {
                         "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "[",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.14,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
                         "event_type": "down",
-                        "event_name": "p",
+                        "event_name": "enter",
                         "__type": "KeyboardCommandModel"
                     },
                     {
                         "command": "delay",
-                        "time": 0.1,
+                        "time": 0.08,
                         "__type": "DelayCommandModel"
                     },
                     {
                         "command": "keyboard",
                         "event_type": "up",
-                        "event_name": "p",
+                        "event_name": "enter",
                         "__type": "KeyboardCommandModel"
                     }
                 ]

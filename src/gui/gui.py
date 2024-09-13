@@ -9,6 +9,7 @@ from PyQt5.QtGui import QPixmap, QPainter, QPen
 from PyQt5.QtWidgets import QLabel
 
 from src import config
+from src.gui.depend.scene_depend import SceneDepend
 from src.gui.macro.scene_macro import SceneMarco, SwitchListener
 from src.gui.monster.scene_monster import SceneMonster
 from src.gui.scene_attach_box import SceneAttachBox
@@ -106,7 +107,7 @@ class MaskWidget(QtWidgets.QWidget):
 
     def paintEvent(self, event):
         painter = QtGui.QPainter(self)
-        painter.setBrush(QtGui.QColor(0, 0, 0, 150))  # 设置半透明颜色
+        painter.setBrush(QtGui.QColor(255, 255, 255, 150))  # 设置半透明颜色
         painter.setPen(QtCore.Qt.PenStyle.NoPen)
         painter.drawRect(self.rect())  # 绘制遮罩矩形
 
@@ -163,6 +164,12 @@ class MainWindow(QtWidgets.QMainWindow):
         monster = SceneMonster()
         self.add_list_item("萌獸", "res/main_tab/tab_monster_box.png", monster)
         self.switch_listener.append(monster)
+
+        depend = SceneDepend()
+        self.add_list_item("附加", "res/main_tab/tab_depend_box.png", depend)
+        self.switch_listener.append(depend)
+
+
         # 啟動鈕
         config.signal.add_listener(self._hotkey)
         self.switch_btn.set_click_listener(self._switch)

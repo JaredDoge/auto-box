@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets
 
 from src import config
 from src.gui.common.widget_abc_meta import SwitchListener, QWidgetABCMeta
-from src.gui.macro.main.macro_main import MacroMain
+from src.gui.macro.main.macro_bot import MacroBot
 from src.module.log import log
 from src.module.looper import Looper
 from src.module.macro.marco_executor import MacroExecutor
@@ -24,15 +24,11 @@ class SceneMarco(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
             sw.idle()
         elif sw.is_off():
             # 開始腳本
-            self.executor.start(self.macro_main.get_run_list())
+            self.executor.start(self.macro_bot.get_run_list())
             sw.on()
 
         else:
             return
-
-    def set_setting(self):
-        pass
-        # config.data.set_setting(self.setting)
 
     def __init__(self):
         super().__init__()
@@ -43,8 +39,8 @@ class SceneMarco(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
         tab_widget = QtWidgets.QTabWidget(self)
         main_layout.addWidget(tab_widget)
 
-        self.macro_main = MacroMain()
-        tab_widget.addTab(self.macro_main, "腳本")
+        self.macro_bot = MacroBot()
+        tab_widget.addTab(self.macro_bot, "腳本")
 
         tab_bar = tab_widget.tabBar()
         tab_bar.setStyleSheet("""

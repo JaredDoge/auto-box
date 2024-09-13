@@ -1,12 +1,12 @@
 from typing import List
 
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal, QObject
+from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal
 import keyboard
 
 from src import config
-from src.data.data import TabModel, TargetAttrModel, Data
-from src.gui.tab_list import TabListWidget
+from src.data.data import TabModel, TargetAttrModel
+from src.gui.depend.main.depend_group_widget import DependGroupWidget
 from src.gui.target_attr_list import TargetListWidget
 from src.module.bot import Target
 
@@ -57,7 +57,7 @@ class TargetSelectDialog(QtWidgets.QDialog):
         return self.box1.currentText(), self.box2.currentText(), self.box3.currentText()
 
 
-class PageBot(QtWidgets.QWidget):
+class DependBot(QtWidgets.QWidget):
     key_signal = pyqtSignal()
 
     def __init__(self):
@@ -87,7 +87,7 @@ class PageBot(QtWidgets.QWidget):
         list_layout.setSpacing(0)
         root_layout.addLayout(list_layout)
 
-        self.tab_list_widget = TabListWidget(self.tab_list)
+        self.tab_list_widget = DependGroupWidget(self.tab_list)
         list_layout.addWidget(self.tab_list_widget, stretch=1)
         self.tab_list_widget.item_select_changed(self._tab_item_selection_changed)
 

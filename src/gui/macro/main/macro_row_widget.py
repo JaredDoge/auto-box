@@ -1,7 +1,9 @@
 from PyQt5 import QtWidgets, QtCore
+from PyQt5.QtWidgets import QListWidget
 from PyQt5.uic.properties import QtGui
 
 from src.data.macro_model import MacroRowModel
+from src.gui.common.drag_move_qlist import DragMoveQListWidget
 from src.gui.common.ignore_right_menu import IgnoreRightButtonMenu
 from src.gui.macro.main.macro_row_edit_dialog import MacroRowEditDialog
 
@@ -53,13 +55,18 @@ class RowItemWidget(QtWidgets.QWidget):
         self.checkbox.setChecked(checked)
 
 
-class MarcoRowWidget(QtWidgets.QListWidget):
+class MarcoRowWidget(DragMoveQListWidget):
 
     def __init__(self, data_change):
         super().__init__()
 
         self.rows = None
         self.data_change = data_change
+
+        self.setSelectionMode(QListWidget.SingleSelection)
+
+        # 连接拖放信号到槽函数
+        self.model().rowsMoved.connect(self._update_data_array)
 
         self.setContextMenuPolicy(QtCore.Qt.ContextMenuPolicy.CustomContextMenu)
         self.customContextMenuRequested.connect(self.show_context_menu)
@@ -109,6 +116,15 @@ class MarcoRowWidget(QtWidgets.QListWidget):
 
     def item_select_changed(self, listener):
         self.itemSelectionChanged.connect(listener)
+
+    def _update_data_array(self, parent, start, end, destination, row):
+        pop = self.rows.pop(start)
+        if start > row:
+            self.rows.insert(row, pop)
+        else:
+            self.rows.insert(row - 1, pop)
+        self.data_change()
+
 
     def _add_item(self, index, row: MacroRowModel):
         item = QtWidgets.QListWidgetItem()

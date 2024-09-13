@@ -1,14 +1,15 @@
 import time
 
-from PyQt5 import QtWidgets, QtCore, QtGui
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtCore import Qt
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QFont, QIntValidator, QDoubleValidator
-from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QHBoxLayout, QListWidget, QMenu, QDialogButtonBox, QMessageBox
+from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QHBoxLayout, QListWidget, QDialogButtonBox, QMessageBox
 import copy
 
 from src import config
 from src.data.macro_model import MacroRowModel, KeyboardCommandModel, DelayCommandModel, CommandModel
+from src.gui.common.drag_move_qlist import DragMoveQListWidget
 from src.gui.common.ignore_right_menu import IgnoreRightButtonMenu
 
 
@@ -60,10 +61,14 @@ class DelayInputDialog(QtWidgets.QDialog):
         return self.delay
 
 
-class CommandListWidget(QtWidgets.QListWidget):
+class CommandListWidget(DragMoveQListWidget):
     def __init__(self, record_signal):
         super().__init__()
+
         self.setSelectionMode(QListWidget.ExtendedSelection)
+
+        self.model().rowsMoved.connect(self._update_data_array)
+
         self.commands = None
         self.record_signal = record_signal
         self.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -71,6 +76,13 @@ class CommandListWidget(QtWidgets.QListWidget):
 
         self.itemDoubleClicked.connect(self._on_item_double_clicked)
         self.is_recording = False
+
+    def _update_data_array(self, parent, start, end, destination, row):
+        pop = self.commands.pop(start)
+        if start > row:
+            self.commands.insert(row, pop)
+        else:
+            self.commands.insert(row - 1, pop)
 
     def keyPressEvent(self, event):
         if event.key() == Qt.Key_Delete and not self.is_recording:
@@ -386,6 +398,13 @@ class MacroRowEditDialog(QtWidgets.QDialog):
 
         self.add_item_signal.connect(self.add_item)
         self.block_record_signal.connect(self.start_block_recording)
+
+    def keyPressEvent(self, event):
+        # 忽略esc關閉的行為
+        if event.key() == Qt.Key_Escape:
+            event.ignore()
+        else:
+            super().keyPressEvent(event)
 
     def confirm(self):
         if len(self.name_widget.text()) <= 0:

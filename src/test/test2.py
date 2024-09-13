@@ -1,20 +1,24 @@
-from PyQt5 import QtWidgets
 import sys
+from PyQt5.QtWidgets import QApplication, QLabel
+from PyQt5.QtGui import QMovie
 
-app = QtWidgets.QApplication(sys.argv)
+# 创建应用程序
+app = QApplication(sys.argv)
 
-Form = QtWidgets.QWidget()
-Form.setWindowTitle('oxxo.studio')
-Form.resize(300, 200)
+# 创建 QLabel 小部件
+label = QLabel()
 
-label = QtWidgets.QLabel(Form)
-label.setGeometry(0,0,100,30)
+# 创建 QMovie 对象，并加载 GIF 文件
+movie = QMovie("res/run.gif")
 
-def key(self):
-    keycode = self.key()         # 取得該按鍵的 keycode
-    label.setText(str(keycode))  # QLabel 印出 keycode
+# 将 QMovie 设置为 QLabel 的内容
+label.setMovie(movie)
 
-Form.keyPressEvent = key         # 建立按下鍵盤事件，對應到 key 函式
+# 开始播放 GIF 动画
+movie.start()
 
-Form.show()
+# 显示窗口
+label.show()
+
+# 运行应用程序事件循环
 sys.exit(app.exec_())

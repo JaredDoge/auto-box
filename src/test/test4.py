@@ -1,52 +1,61 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QListWidget, QListWidgetItem, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QListWidget, QListWidgetItem, QWidget, QVBoxLayout, QLabel
 
-
-class DragDropListWidget(QListWidget):
-    def __init__(self, data_array):
+# 示例自定义 widget
+class RowItemWidget(QWidget):
+    def __init__(self, row, data_change_callback=None):
         super().__init__()
+        self.row = row
+        self.data_change_callback = data_change_callback
+        layout = QVBoxLayout()
+        self.label = QLabel(row)
+        layout.addWidget(self.label)
+        self.setLayout(layout)
 
-        self.data_array = data_array
-
-        # 允许拖放操作
+class CustomListWidget(QListWidget):
+    def __init__(self):
+        super().__init__()
         self.setDragDropMode(self.InternalMove)
-        self.setSelectionMode(self.ExtendedSelection)
+        self.setSelectionMode(self.SingleSelection)
 
-        # 添加数据数组中的项到 QListWidget
-        for item in self.data_array:
-            self.addItem(QListWidgetItem(item))
+    def _add_item(self, index, row: str):
+        item = QListWidgetItem()
+        self.insertItem(index, item)
+        widget_item = RowItemWidget(row)
+        item.setSizeHint(widget_item.sizeHint())
+        self.setItemWidget(item, widget_item)
 
-        # 连接拖放信号到槽函数
-        self.model().rowsMoved.connect(self.update_data_array)
-
-    def update_data_array(self, parent, start, end, destination, row):
-        # 更新数据数组的顺序
-        if start < row:
-            self.data_array.insert(row, self.data_array.pop(start))
+    def dragMoveEvent(self, event):
+        if ((target := self.row(self.itemAt(event.pos()))) ==
+                (current := self.currentRow()) + 1 or
+                (current == self.count() - 1 and target == -1)):
+            event.ignore()
         else:
-            self.data_array.insert(row, self.data_array.pop(start))
+            super().dragMoveEvent(event)
 
-        # 打印更新后的数据数组
-        print("Updated Data Array:", self.data_array)
-
+    # def dropEvent(self, event):
+    #     super().dropEvent(event)
+    #     self._update_widgets()
+    #
+    # def _update_widgets(self):
+    #     for i in range(self.count()):
+    #         item = self.item(i)
+    #         widget_item = self.itemWidget(item)
+    #         self.removeItemWidget(item)
+    #         self.setItemWidget(item, widget_item)
+    #         item.setSizeHint(widget_item.sizeHint())
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
 
-    # 创建一个包含一些数据的数组
-    data_array = ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7"]
+    list_widget = CustomListWidget()
+    rows = ["Item 0", "Item 1", "Item 2", "Item 3", "Item 4"]
 
-    # 创建窗口和布局
-    window = QWidget()
-    layout = QVBoxLayout()
+    for i, row in enumerate(rows):
+        list_widget._add_item(i, row)
 
-    # 创建自定义 DragDropListWidget，并传入数据数组
-    list_widget = DragDropListWidget(data_array)
-    layout.addWidget(list_widget)
-
-    window.setLayout(layout)
-    window.setWindowTitle('QListWidget 拖曳排序同步数据示例')
-    window.resize(300, 200)
-    window.show()
+    list_widget.setWindowTitle('Custom QListWidgetItem 拖曳排序')
+    list_widget.resize(300, 200)
+    list_widget.show()
 
     sys.exit(app.exec_())

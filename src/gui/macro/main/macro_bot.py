@@ -2,16 +2,11 @@ from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtGui import QFont
 
 from src import config
-from src.data.macro_model import MacroGroupModel, MacroRowModel
 from src.gui.macro.main.macro_group_widget import MarcoGroupWidget
-from src.gui.macro.main.macro_row_edit_dialog import MacroRowEditDialog
 from src.gui.macro.main.macro_row_widget import MarcoRowWidget
 
 
-# config.data.set_tabs(self.tab_list)
-
-
-class MacroMain(QtWidgets.QWidget):
+class MacroBot(QtWidgets.QWidget):
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -48,7 +43,7 @@ class MacroMain(QtWidgets.QWidget):
         group_add = QtWidgets.QPushButton("+")
         group_add.setFixedSize(30, 30)
         group_add.setStyleSheet("font-size: 18px")
-        group_add.clicked.connect(lambda: self._group_dialog())
+        group_add.clicked.connect(lambda: self.group_widget.show_add_dialog())
 
         group_title = QtWidgets.QLabel("群組")
         _title_style(group_title)
@@ -97,8 +92,8 @@ class MacroMain(QtWidgets.QWidget):
         # 過濾沒有打勾的腳本
         return list(filter(lambda m: m.run, group.macros))
 
-    def _group_dialog(self):
-        self.group_widget.show_add_dialog()
+    # def _group_dialog(self):
+    #     self.group_widget.show_add_dialog()
 
     # 資料有異動，更新資料庫
     def _data_change(self):
