@@ -86,8 +86,8 @@ class Bot:
                     continue
 
                 # 定位附加框
-                tl_result = util.single_match(self.frame, BOX_TL_TEMPLATE)
-                br_result = util.single_match(self.frame, BOX_BR_TEMPLATE)
+                tl_result = util.single_match(self.frame, DEPEND_TL_TEMPLATE)
+                br_result = util.single_match(self.frame, DEPEND_BR_TEMPLATE)
                 if tl_result is None or br_result is None:
                     log('老鐵，要先開附加框阿')
                     config.switch.unhook()
@@ -123,11 +123,11 @@ class Bot:
                         if self.box_frame is None:
                             continue
 
-                        if not util.match(self.box_frame, BOX_TEMPLATE):
+                        if not util.match(self.box_frame, DEPEND_TEMPLATE):
                             log(f'找不到附加框({attempt})')
                             if attempt <= 0:
                                 log('寄啦 附加框消失啦')
-                                if config.data.get_setting().rescue and rescue(self.window):
+                                if config.data.get_depend_rescue_setting().rescue and rescue(self.window):
                                     # 搶救成功
                                     continue
                                 else:
@@ -140,7 +140,7 @@ class Bot:
                                 continue
                         # 清除附加框秒數
                         attempt = 10
-                        if util.match(self.box_frame, OK_TEMPLATE):
+                        if util.match(self.box_frame, DEPEND_OK_TEMPLATE):
                             keyboard.send('enter')
                             time.sleep(0.1)
                             continue
@@ -174,7 +174,7 @@ class Bot:
         all_equal = True
         single('------------------------')
         for target in targets:
-            find_count = len(util.template(self.box_frame, config.data.get_template(target.attr), self.base.threshold))
+            find_count = len(util.template(self.box_frame, config.data.get_depend_attrs_template(target.attr), self.base.threshold))
             single(f'{target.attr}:目標{target.count},找到{find_count}')
             if find_count != target.count:
                 all_equal = False

@@ -62,6 +62,10 @@ class ResolveRuneTaskWrapper(TaskWrapper):
         await self._click(self.keys['rope'])
         await asyncio.sleep(3)
 
+    async def _adjust(self):
+        await self._click(f'{self.keys['right']}+{self.keys['jump']}')
+        await asyncio.sleep(1)
+
     async def _try_down(self):
         keyboard.release(self.keys['right'])
         keyboard.release(self.keys['left'])
@@ -92,7 +96,7 @@ class ResolveRuneTaskWrapper(TaskWrapper):
             cut = screen.capture_rgb(rune_cut)
             di = config.machine.predict(cut)
             log(f'推斷為:{di}')
-            di = di.ljust(4, 'u')[:4]
+            di = di.ljust(4, 'r')[:4]
             log(f'補正為:{di}')
             for char in di:
                 if char == 'u':
@@ -137,7 +141,7 @@ class ResolveRuneTaskWrapper(TaskWrapper):
             self.try_index = 0
 
             while self.try_index < len(try_pos):
-                self.rope_limit = 5
+                self.rope_limit = 8
                 rune_x, rune_y = try_pos[self.try_index]
                 log(f'目標位置{try_pos[self.try_index]}')
                 while True:
@@ -160,7 +164,7 @@ class ResolveRuneTaskWrapper(TaskWrapper):
                     result = await self._to_rune_y(player_y, rune_y)
 
                     if result == SubTaskResult.FAIL:
-                        log(f'解輪失敗')
+                        log(f'解輪失敗，地圖輪位置進行微調')
                         break
 
                     if result == SubTaskResult.EFFORT:
@@ -177,7 +181,8 @@ class ResolveRuneTaskWrapper(TaskWrapper):
                         log('成功解輪')
                         done()
                         return
-
+                    log(f'解輪失敗，人物位置進行微調')
+                    await self._adjust()
                     await asyncio.sleep(self._INTERVAL)
 
                 self.try_index += 1

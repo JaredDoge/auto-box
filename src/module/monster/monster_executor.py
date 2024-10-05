@@ -1,5 +1,7 @@
 import asyncio
+import sys
 import time
+import traceback
 from typing import Dict, TypedDict, Union, Callable
 
 import cv2
@@ -49,7 +51,7 @@ class MonsterExecutor:
                 full = await config.window_tool.get_game_screen()
                 monster = get_monster(full, monster_tl, monster_br)
 
-                find_count = len(cv2_util.template(monster, LAST_DAMAGE_TEMPLATE))
+                find_count = len(cv2_util.unique(monster, LAST_DAMAGE_TEMPLATE))
                 single(f'找到{find_count}')
 
                 if find_count >= 3:
@@ -59,14 +61,16 @@ class MonsterExecutor:
                     return
 
                 keyboard.send('enter')
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.2)
                 keyboard.send('enter')
-                await asyncio.sleep(0.7)
+                await asyncio.sleep(0.8)
 
         except asyncio.CancelledError:
             pass
         except Exception as e:
-            print(f'{e}')
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_traceback, limit=None, file=sys.stdout)
+            self.stop()
 
     def start(self):
         async def _start():

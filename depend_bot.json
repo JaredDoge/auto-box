@@ -1,0 +1,132 @@
+[
+    {
+        "name": "dex ",
+        "targets": [
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "DEX+8%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "DEX+2",
+                "attr3": "DEX+2"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+2",
+                "attr3": "DEX+2"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "DEX+2"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+2",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "DEX+2",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+2",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "DEX+2",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "DEX+2",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+8%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+2",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "全屬+6%",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "全屬+6%",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "全屬+6%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "全屬+6%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+6%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "DEX+6%",
+                "attr3": "DEX+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+6%",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "DEX+6%",
+                "attr3": "全屬+6%"
+            },
+            {
+                "attr1": "DEX+8%",
+                "attr2": "DEX+6%",
+                "attr3": "全屬+5%"
+            },
+            {
+                "attr1": "DEX+2",
+                "attr2": "DEX+6%",
+                "attr3": "全屬+5%"
+            }
+        ]
+    },
+    {
+        "name": "三物",
+        "targets": [
+            {
+                "attr1": "物攻",
+                "attr2": "物攻",
+                "attr3": "物攻"
+            }
+        ]
+    }
+]

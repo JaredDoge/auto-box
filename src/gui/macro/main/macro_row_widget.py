@@ -5,7 +5,7 @@ from PyQt5.uic.properties import QtGui
 from src.data.macro_model import MacroRowModel
 from src.gui.common.drag_move_qlist import DragMoveQListWidget
 from src.gui.common.ignore_right_menu import IgnoreRightButtonMenu
-from src.gui.macro.main.macro_row_edit_dialog import MacroRowEditDialog
+from src.gui.macro.main.macro_row_edit_dialog import CommandSetEditDialog
 
 
 class RowItemWidget(QtWidgets.QWidget):
@@ -161,7 +161,7 @@ class MarcoRowWidget(DragMoveQListWidget):
 
     def show_add_dialog(self):
 
-        dialog = MacroRowEditDialog()
+        dialog = CommandSetEditDialog()
         result = dialog.exec_()
 
         if result == QtWidgets.QDialog.Accepted:
@@ -171,7 +171,7 @@ class MarcoRowWidget(DragMoveQListWidget):
         if index >= len(self.rows) or index < 0:
             return
 
-        dialog = MacroRowEditDialog(self.rows[index])
+        dialog = CommandSetEditDialog(self.rows[index])
         result = dialog.exec_()
 
         if result == QtWidgets.QDialog.Accepted:

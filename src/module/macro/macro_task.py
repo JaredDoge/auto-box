@@ -4,7 +4,8 @@ import threading
 from typing import Callable
 
 from src.module.looper import TaskWrapper, Looper
-from src.data.macro_model import MacroRowModel, DelayCommandModel, KeyboardCommandModel, HorizontalBorderCommandModel
+from src.data.macro_model import MacroRowModel
+from src.data.command_model import HorizontalBorderCommandModel, DelayCommandModel, KeyboardCommandModel
 from src.module.log import log
 import keyboard
 

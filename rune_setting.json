@@ -3,6 +3,7 @@
   "left": "left",
   "up": "up",
   "down": "down",
+  "jump": "alt",
   "jump_off": "down+alt",
   "rope": "e",
   "collect": "space"

@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 
-from src.gui.page_attr import PageAttributes
-from src.gui.depend.main.depend_bot import DependBot
+from src.gui.depend.bot.bot import BotWidget
+from src.gui.depend.bot.bot_target import BotTargetWidget
 from src.gui.page_setting import PageSetting
 
 
@@ -11,10 +11,10 @@ class SceneAttachBox(QtWidgets.QWidget):
         super().__init__()
         tab_widget = QtWidgets.QTabWidget(self)
 
-        page_bot = DependBot()
+        page_bot = BotWidget()
         tab_widget.addTab(page_bot, "附加")
 
-        page_attr = PageAttributes()
+        page_attr = BotTargetWidget()
         tab_widget.addTab(page_attr, "屬性")
         
         page_setting = PageSetting()

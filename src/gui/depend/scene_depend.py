@@ -2,9 +2,9 @@ from PyQt5 import QtWidgets
 
 from src import config
 from src.gui.common.widget_abc_meta import SwitchListener, QWidgetABCMeta
-from src.gui.page_attr import PageAttributes
-from src.gui.depend.main.depend_bot import DependBot
-from src.gui.page_setting import PageSetting
+from src.gui.depend.attr.attr import AttrWidget
+from src.gui.depend.bot.bot import BotWidget
+from src.module.depend.depend_executor import DependExecutor
 
 
 class SceneDepend(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
@@ -17,7 +17,7 @@ class SceneDepend(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
             sw.idle()
         elif sw.is_off():
             # 開始腳本
-            self.executor.start()
+            self.executor.start(self.bot.get_run_list())
             sw.on()
 
     def __init__(self):
@@ -30,14 +30,14 @@ class SceneDepend(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
         tab_widget = QtWidgets.QTabWidget(self)
         main_layout.addWidget(tab_widget)
 
-        page_bot = DependBot()
-        tab_widget.addTab(page_bot, "腳本")
+        self.bot = BotWidget()
+        tab_widget.addTab(self.bot, "腳本")
 
-        page_attr = PageAttributes()
-        tab_widget.addTab(page_attr, "屬性")
+        self.attr = AttrWidget()
+        tab_widget.addTab(self.attr, "屬性")
 
-        page_setting = PageSetting()
-        tab_widget.addTab(page_setting, "設定")
+        # page_setting = PageSetting()
+        # tab_widget.addTab(page_setting, "設定")
 
         tab_bar = tab_widget.tabBar()
         tab_bar.setStyleSheet("""
@@ -49,4 +49,5 @@ class SceneDepend(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
             }
             """)
 
-
+        self.executor = DependExecutor()
+        self.executor.set_stop_callback(lambda: config.switch.off())

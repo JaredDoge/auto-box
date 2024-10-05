@@ -4,7 +4,8 @@ import threading
 
 import keyboard
 
-from src.data.macro_model import MacroRowModel, DelayCommandModel, KeyboardCommandModel
+from src.data.macro_model import MacroRowModel
+from src.data.command_model import DelayCommandModel, KeyboardCommandModel
 from src.module.log import log
 
 user32 = ctypes.windll.user32

@@ -1,12 +1,12 @@
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List
 
 from dataclasses_json import dataclass_json
 
+from src.data.depend_model import DependModel, RescueSettingModel, AttrModel
 from src.data.macro_model import MacroGroupModel
 from src.data.rune_model import RuneSettingModel
-from src.module.cv import cv_imread
 
 
 @dataclass_json
@@ -16,44 +16,18 @@ class BaseModel:
     threshold: float = 0.985
 
 
-@dataclass_json
-@dataclass
-class SettingModel:
-    rescue: bool = False
-
-
-@dataclass_json
-@dataclass
-class AttrModel:
-    name: str
-    path: str
-
-
-@dataclass_json
-@dataclass
-class TargetAttrModel:
-    attr1: str
-    attr2: str
-    attr3: str
-
-
-@dataclass_json
-@dataclass
-class TabModel:
-    name: str
-    targets: list[TargetAttrModel] = field(default_factory=list)
-
-
 class Data:
 
     def __init__(self):
-        self._attrs = self._to_dataclass(self.load_json("attrs.json"), AttrModel)
-        self._tabs = self._to_dataclass(self.load_json("attach_tabs.json"), TabModel)
-        self._setting = self._to_dataclass(self.load_json("setting.json", '{}'), SettingModel, many=False)
+        self._depend_attrs = self._to_dataclass(self.load_json("depend_attrs.json"), AttrModel)
+        self._depend_bot = self._to_dataclass(self.load_json("depend_bot.json"), DependModel)
+        self._depend_rescue_setting = self._to_dataclass(self.load_json("depend_rescue_setting.json", '{}'),
+                                                         RescueSettingModel, many=False)
         self._macro_groups = self._to_dataclass(self.load_json("macro_groups.json"), MacroGroupModel)
         self._rune_setting = self._to_dataclass(self.load_json("rune_setting.json", '{}'), RuneSettingModel, many=False)
         self._base = self._to_dataclass(self.load_json("base.json", '{}'), BaseModel, many=False)
-        self._templates = {a.name: cv_imread(a.path) for a in self._attrs if os.path.exists(a.path)}
+        self._forest_steps = self._to_dataclass(self.load_json("forest_steps.json"), MacroGroupModel) if os.path.exists(
+            "forest_steps.json") else self._get_default_forest_steps()
         self.set_base(self._base)
 
     @staticmethod
@@ -73,48 +47,48 @@ class Data:
     def _to_json(data: object, d_type: object, many=True) -> str:
         return d_type.schema().dumps(data, ensure_ascii=False, many=many, indent=4)
 
-    def set_attrs(self, attrs):
-        self._attrs = attrs
-        with open("attrs.json", "w", encoding='utf-8') as json_file:
+    def _get_default_forest_steps(self):
+        return [MacroGroupModel(name='進副本前', command_set=[]), MacroGroupModel(name='第一關', command_set=[]),
+                MacroGroupModel(name='第二關', command_set=[]), MacroGroupModel(name='第三關', command_set=[]),
+                MacroGroupModel(name='第四關', command_set=[]), MacroGroupModel(name='第五關', command_set=[]),
+                MacroGroupModel(name='第六關', command_set=[]), MacroGroupModel(name='第七關', command_set=[])]
+
+    def set_depend_attrs(self, attrs):
+        self._depend_attrs = attrs
+        with open("depend_attrs.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(attrs, AttrModel))
 
-    def set_tabs(self, tabs):
-        self._tabs = tabs
-        with open("attach_tabs.json", "w", encoding='utf-8') as json_file:
-            json_file.write(self._to_json(tabs, TabModel))
+    def set_depend_bot(self, depend_bot):
+        self._depend_bot = depend_bot
+        with open("depend_bot.json", "w", encoding='utf-8') as json_file:
+            json_file.write(self._to_json(depend_bot, DependModel))
 
     def set_macro_groups(self, macro_groups):
         self._macro_groups = macro_groups
         with open("macro_groups.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(macro_groups, MacroGroupModel))
 
-    def set_setting(self, setting):
-        self._setting = setting
-        with open("setting.json", "w", encoding='utf-8') as json_file:
-            json_file.write(self._to_json(setting, SettingModel, many=False))
+    def set_depend_rescue_setting(self, setting):
+        self._depend_rescue_setting = setting
+        with open("depend_rescue_setting.json", "w", encoding='utf-8') as json_file:
+            json_file.write(self._to_json(setting, RescueSettingModel, many=False))
 
     def set_base(self, base):
         self._base = base
         with open("base.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(base, BaseModel, many=False))
 
-    def get_setting(self):
-        return self._setting
+    def get_depend_rescue_setting(self):
+        return self._depend_rescue_setting
 
-    def get_attrs(self):
-        return self._attrs
+    def get_depend_attrs(self):
+        return self._depend_attrs
 
-    def get_tabs(self):
-        return self._tabs
+    def get_depend_bot(self):
+        return self._depend_bot
 
     def get_macro_groups(self):
         return self._macro_groups
-
-    def get_templates(self):
-        return self._templates
-
-    def get_template(self, name):
-        return self._templates[name]
 
     def get_base(self):
         return self._base
@@ -126,3 +100,6 @@ class Data:
 
     def get_rune_setting(self):
         return self._rune_setting
+
+    def get_depend_attrs(self):
+        return self._depend_attrs

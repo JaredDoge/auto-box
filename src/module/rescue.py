@@ -74,7 +74,7 @@ def rescue(window) -> bool:
 
             time.sleep(0.5)
 
-            if not util.match(frame, OK_TEMPLATE):
+            if not util.match(frame, DEPEND_OK_TEMPLATE):
                 step += 1
                 time.sleep(0.1)
                 continue
@@ -83,7 +83,7 @@ def rescue(window) -> bool:
         elif step == 4:
             log('step 4 點OK')
 
-            if util.match(frame, OK_TEMPLATE):
+            if util.match(frame, DEPEND_OK_TEMPLATE):
                 keyboard.send('enter')
                 time.sleep(0.1)
                 continue
@@ -91,7 +91,7 @@ def rescue(window) -> bool:
             continue
         elif step == 5:
             log('step 5 找附加框')
-            if not util.match(frame, BOX_TEMPLATE):
+            if not util.match(frame, DEPEND_TEMPLATE):
                 time.sleep(0.3)
                 continue
 

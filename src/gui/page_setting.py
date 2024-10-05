@@ -19,12 +19,12 @@ class PageSetting(QtWidgets.QWidget):
         return f"<span style='color:gray;'>{text}</span>"
 
     def set_setting(self):
-        config.data.set_setting(self.setting)
+        config.data.set_depend_rescue_setting(self.setting)
 
     def __init__(self):
         super().__init__()
 
-        self.setting = config.data.get_setting()
+        self.setting = config.data.get_depend_rescue_setting()
 
         layout = QtWidgets.QVBoxLayout()
 

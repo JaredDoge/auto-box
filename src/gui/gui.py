@@ -12,10 +12,6 @@ from src import config
 from src.gui.depend.scene_depend import SceneDepend
 from src.gui.macro.scene_macro import SceneMarco, SwitchListener
 from src.gui.monster.scene_monster import SceneMonster
-from src.gui.scene_attach_box import SceneAttachBox
-from src.module.log import log
-from src.module.macro.macro_task import MacroTaskWrapper
-from src.module.macro.marco_executor import MacroExecutor
 from src.module.switch import SwitchState
 
 

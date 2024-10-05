@@ -10,5 +10,6 @@ class RuneSettingModel:
     up: str
     down: str
     jump_off: str
+    jump: str
     rope: str
     collect: str

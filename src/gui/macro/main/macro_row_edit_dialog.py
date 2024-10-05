@@ -8,7 +8,8 @@ from PyQt5.QtWidgets import QVBoxLayout, QPushButton, QHBoxLayout, QListWidget, 
 import copy
 
 from src import config
-from src.data.macro_model import MacroRowModel, KeyboardCommandModel, DelayCommandModel, CommandModel
+from src.data.macro_model import MacroRowModel
+from src.data.command_model import DelayCommandModel, KeyboardCommandModel, CommandModel
 from src.gui.common.drag_move_qlist import DragMoveQListWidget
 from src.gui.common.ignore_right_menu import IgnoreRightButtonMenu
 
@@ -293,7 +294,7 @@ class CountSelectWidget(QtWidgets.QWidget):
             self.unit_label.show()
 
 
-class MacroRowEditDialog(QtWidgets.QDialog):
+class CommandSetEditDialog(QtWidgets.QDialog):
     add_item_signal = pyqtSignal(object)
     block_record_signal = pyqtSignal(object)
 

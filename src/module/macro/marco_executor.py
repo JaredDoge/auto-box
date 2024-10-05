@@ -1,5 +1,7 @@
 import asyncio
+import sys
 import time
+import traceback
 from abc import ABC
 from typing import Dict, TypedDict, Union, Callable
 
@@ -61,10 +63,19 @@ class MacroExecutor(FrameProvider):
 
             while True:
                 full = await config.window_tool.get_game_screen()
+
+                if full.size <= 0:
+                    log(f"{mm_tl},{mm_br}")
+                    raise ValueError("截圖長度為0")
+
                 minimap = get_minimap(full, mm_tl, mm_br)
+
+                if minimap.size <= 0:
+                    raise ValueError("小地圖為0")
 
                 rune = find_rune(minimap)
                 player = find_player2(minimap)
+
                 # 覆蓋每幀資料
                 self.frame = {
                     'minimap': {
@@ -76,34 +87,6 @@ class MacroExecutor(FrameProvider):
                     }
                 }
                 log(f"player: {player}, rune: {rune}")
-
-
-                # log(lock)
-                # if lock:
-                    # 获取目标位置
-                    # x, y = lock[0][0], lock[0][1]
-
-                    # # 设定矩形框的大小
-                    # box_size = 50  # 矩形框的宽高，例如 50x50 像素
-                    # half_size = box_size // 2
-                    #
-                    # # 定义矩形框的坐标
-                    # top_left = (x - half_size, y - half_size)
-                    # bottom_right = (x + half_size, y + half_size)
-                    #
-                    # # 绘制绿色矩形框
-                    #
-                    # cv2.rectangle(full, top_left, bottom_right, (0, 255, 0), 2)
-                    #
-                    # # 可选：绘制中心点标记（例如一个小圆圈）
-                    # cv2.circle(full, (x, y), 5, (0, 255, 0), -1)  # -1 表示填充圆圈
-                    #
-                    # # 显示图像
-                    # cv2.imshow('Minimap with Target', full)
-                    # cv2.waitKey(0)
-                    # cv2.destroyAllWindows()
-
-                    # continue
 
                 if self.current_task and self.current_task.get_name() == resolve_rune.NAME:
                     await asyncio.sleep(self._INTERVAL)
@@ -121,6 +104,7 @@ class MacroExecutor(FrameProvider):
                 if self.current_task and self.current_task.get_name() == macro.NAME:
                     await asyncio.sleep(self._INTERVAL)
                     continue
+
                 await self._cancel(self.current_task)
                 task = self.looper.run_task(macro.create(_macro_done))
                 task.set_name(macro.NAME)
@@ -131,7 +115,9 @@ class MacroExecutor(FrameProvider):
         except asyncio.CancelledError:
             pass
         except Exception as e:
-            print(f'{e}')
+            exc_type, exc_value, exc_traceback = sys.exc_info()
+            traceback.print_exception(exc_type, exc_value, exc_traceback, limit=None, file=sys.stdout)
+            self.stop()
 
     def start(self, macro_rows: list[MacroRowModel]):
         async def _start():
