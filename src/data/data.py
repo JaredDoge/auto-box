@@ -48,10 +48,10 @@ class Data:
         return d_type.schema().dumps(data, ensure_ascii=False, many=many, indent=4)
 
     def _get_default_forest_steps(self):
-        return [MacroGroupModel(name='進副本前', command_set=[]), MacroGroupModel(name='第一關', command_set=[]),
-                MacroGroupModel(name='第二關', command_set=[]), MacroGroupModel(name='第三關', command_set=[]),
-                MacroGroupModel(name='第四關', command_set=[]), MacroGroupModel(name='第五關', command_set=[]),
-                MacroGroupModel(name='第六關', command_set=[]), MacroGroupModel(name='第七關', command_set=[])]
+        return [MacroGroupModel(name='進副本前', macros=[]), MacroGroupModel(name='第一關', macros=[]),
+                MacroGroupModel(name='第二關', macros=[]), MacroGroupModel(name='第三關', macros=[]),
+                MacroGroupModel(name='第四關', macros=[]), MacroGroupModel(name='第五關', macros=[]),
+                MacroGroupModel(name='第六關', macros=[]), MacroGroupModel(name='第七關', macros=[])]
 
     def set_depend_attrs(self, attrs):
         self._depend_attrs = attrs
@@ -78,6 +78,16 @@ class Data:
         with open("base.json", "w", encoding='utf-8') as json_file:
             json_file.write(self._to_json(base, BaseModel, many=False))
 
+    def set_rune_setting(self, setting):
+        self._rune_setting = setting
+        with open("rune_setting.json", "w", encoding='utf-8') as json_file:
+            json_file.write(self._to_json(setting, RuneSettingModel, many=False))
+
+    def set_forest_steps(self, forest_steps):
+        self._forest_steps = forest_steps
+        with open("forest_steps.json", "w", encoding='utf-8') as json_file:
+            json_file.write(self._to_json(forest_steps, MacroGroupModel))
+
     def get_depend_rescue_setting(self):
         return self._depend_rescue_setting
 
@@ -93,13 +103,8 @@ class Data:
     def get_base(self):
         return self._base
 
-    def set_rune_setting(self, setting):
-        self._rune_setting = setting
-        with open("rune_setting.json", "w", encoding='utf-8') as json_file:
-            json_file.write(self._to_json(setting, RuneSettingModel, many=False))
-
     def get_rune_setting(self):
         return self._rune_setting
 
-    def get_depend_attrs(self):
-        return self._depend_attrs
+    def get_forest_steps(self):
+        return self._forest_steps

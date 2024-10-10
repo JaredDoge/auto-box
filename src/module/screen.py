@@ -1,3 +1,5 @@
+import os
+
 import cv2
 import mss
 import numpy as np
@@ -34,3 +36,8 @@ def show_frame(frame):
         cv2.destroyAllWindows()
     else:
         print("No frame to display")
+
+
+def save_frame(frame, save_path):
+    cv2.imencode('.png', frame)[1].tofile(save_path)
+    print(f"Frame saved to {save_path}")

@@ -24,30 +24,39 @@ BAG_SPECIAL_SELECT_TAG_TEMPLATE = cv2.imread('res/depend/bag/bag_special_select_
 BAG_RIGHT_BOTTOM_TEMPLATE = cv2.imread('res/depend/bag/bag_right_bottom.png', cv2.IMREAD_GRAYSCALE)
 BAG_EQUIPMENT_SELECT_TAG = cv2.imread('res/depend/bag/bag_equipment_select_tag.png', cv2.IMREAD_GRAYSCALE)
 
-MM_TL_TEMPLATE = cv2.imread('res/min_map/minimap_tl_template.png', cv2.IMREAD_GRAYSCALE)
-MM_BR_TEMPLATE = cv2.imread('res/min_map/minimap_br_template.png', cv2.IMREAD_GRAYSCALE)
+MM_TL_TEMPLATE = cv2.imread('res/mini_map/minimap_tl_template.png', cv2.IMREAD_GRAYSCALE)
+MM_BR_TEMPLATE = cv2.imread('res/mini_map/minimap_br_template.png', cv2.IMREAD_GRAYSCALE)
 
 PLAYER_RANGES = (
     ((24, 186, 205), (29, 212, 255)),
 )
-player_filtered = cv2_util.filter_color(cv2.imread('res/min_map/player_template2.png'), PLAYER_RANGES)
-PLAYER_TEMPLATE_2 = cv2.cvtColor(player_filtered, cv2.COLOR_BGR2GRAY)
+PLAYER_FILTERED = cv2_util.filter_color(cv2.imread('res/mini_map/player_template2.png'), PLAYER_RANGES)
+PLAYER_TEMPLATE_2 = cv2.cvtColor(PLAYER_FILTERED, cv2.COLOR_BGR2GRAY)
 
-PLAYER_TEMPLATE = cv2.imread('res/min_map/player_template.png', cv2.IMREAD_GRAYSCALE)
+PLAYER_TEMPLATE = cv2.imread('res/mini_map/player_template.png', cv2.IMREAD_GRAYSCALE)
 PT_HEIGHT, PT_WIDTH = PLAYER_TEMPLATE.shape
 
-RUNE_BUFF_TEMPLATE = cv2.imread('res/min_map/rune_buff_template.jpg', cv2.IMREAD_GRAYSCALE)
+RUNE_BUFF_TEMPLATE = cv2.imread('res/mini_map/rune_buff_template.jpg', cv2.IMREAD_GRAYSCALE)
 
-RUNE_LOCK_BUFF_TEMPLATE_P1 = cv2.imread('res/min_map/rune_lock_buff_p1.png', cv2.IMREAD_GRAYSCALE)
-RUNE_LOCK_BUFF_TEMPLATE_P2 = cv2.imread('res/min_map/rune_lock_buff_p2.png', cv2.IMREAD_GRAYSCALE)
+RUNE_LOCK_BUFF_TEMPLATE_P1 = cv2.imread('res/mini_map/rune_lock_buff_p1.png', cv2.IMREAD_GRAYSCALE)
+RUNE_LOCK_BUFF_TEMPLATE_P2 = cv2.imread('res/mini_map/rune_lock_buff_p2.png', cv2.IMREAD_GRAYSCALE)
 
 RUNE_RANGES = (
     ((141, 148, 245), (146, 158, 255)),
 )
-rune_filtered = cv2_util.filter_color(cv2.imread('res/min_map/rune_template.png'), RUNE_RANGES)
-RUNE_TEMPLATE = cv2.cvtColor(rune_filtered, cv2.COLOR_BGR2GRAY)
+RUNE_FILTERED = cv2_util.filter_color(cv2.imread('res/mini_map/rune_template.png'), RUNE_RANGES)
+RUNE_TEMPLATE = cv2.cvtColor(RUNE_FILTERED, cv2.COLOR_BGR2GRAY)
+
+PORTAL_RANGES = (
+    ((96, 145, 172), (102, 237, 255)),
+)
+PORTAL_FILTERED = cv2_util.filter_color(cv2.imread('res/mini_map/portal_template.png'), PORTAL_RANGES)
+PORTAL_TEMPLATE = cv2.cvtColor(PORTAL_FILTERED, cv2.COLOR_BGR2GRAY)
+
 
 MONSTER_TL_TEMPLATE = cv2.imread('res/monster/monster_tl_template.png', cv2.IMREAD_GRAYSCALE)
 MONSTER_BR_TEMPLATE = cv2.imread('res/monster/monster_br_template.png', cv2.IMREAD_GRAYSCALE)
 
 LAST_DAMAGE_TEMPLATE = cv2.imread('res/monster/last_damage.png')
+
+FOREST_PASS_TEMPLATE = cv2.imread('res/forest/clear.png', cv2.IMREAD_GRAYSCALE)

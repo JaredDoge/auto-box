@@ -1,0 +1,104 @@
+[
+    {
+        "name": "進副本前",
+        "macros": [
+            {
+                "name": "asf",
+                "count": -1,
+                "interval": 0.5,
+                "run": true,
+                "commands": [
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "a",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.02,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "s",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.11,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "d",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.02,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "a",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.04,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "s",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.01,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "d",
+                        "__type": "KeyboardCommandModel"
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "name": "第一關",
+        "macros": []
+    },
+    {
+        "name": "第二關",
+        "macros": []
+    },
+    {
+        "name": "第三關",
+        "macros": []
+    },
+    {
+        "name": "第四關",
+        "macros": []
+    },
+    {
+        "name": "第五關",
+        "macros": []
+    },
+    {
+        "name": "第六關",
+        "macros": []
+    },
+    {
+        "name": "第七關",
+        "macros": []
+    }
+]

@@ -9,15 +9,15 @@ import cv2
 
 from src import config
 from src.data.macro_model import MacroRowModel
-from src.module.forest.forest_util import find_portal, check_pass
+from src.module import screen
 from src.module.log import log
 from src.module.macro.frame_provider import FrameProvider
 from src.module.macro.macro_task import MacroTaskWrapper
 from src.module.macro.macro_util import find_minimap, get_minimap, find_rune, find_player2, find_rune_lock_buff_p1, find_rune_lock_buff_p2
 from src.module.macro.resolve_rune_task import ResolveRuneTaskWrapper
-from src.module import screen
 
-class MacroExecutor(FrameProvider):
+
+class ForestExecutor(FrameProvider):
     def get_frame(self):
         return self.frame
 
@@ -50,7 +50,7 @@ class MacroExecutor(FrameProvider):
         def _resole_rune_done():
             self.current_task = None
 
-        macro = MacroTaskWrapper(macro_rows, self)  # 打怪腳本
+        macro = MacroTaskWrapper(macro_rows, self)  # 副本裡腳本
         resolve_rune = ResolveRuneTaskWrapper(macro)  # 解輪腳本
 
         try:
@@ -66,17 +66,17 @@ class MacroExecutor(FrameProvider):
                 full = await config.window_tool.get_game_screen()
 
                 if full.size <= 0:
-                    screen.save_frame(full, f'截圖長度0_{time.time()}.png')
-                    continue
+                    log(f"{mm_tl},{mm_br}")
+                    raise ValueError("截圖長度為0")
 
                 minimap = get_minimap(full, mm_tl, mm_br)
 
                 if minimap.size <= 0:
-                    screen.save_frame(full, f'小地圖長度0_{time.time()}.png')
-                    continue
+                    log(f"----- {mm_tl},{mm_br}")
+                    screen.save_frame(full, '又出問題拉.png')
+                    raise ValueError("小地圖長度為0")
 
-                clear = check_pass(full)
-                portal = find_portal(minimap)
+
                 rune = find_rune(minimap)
                 player = find_player2(minimap)
 
@@ -90,7 +90,7 @@ class MacroExecutor(FrameProvider):
                         'player': player
                     }
                 }
-                log(f"player: {player}, rune: {rune}, portal: {portal}, clear: {clear}")
+                log(f"player: {player}, rune: {rune}")
 
                 if self.current_task and self.current_task.get_name() == resolve_rune.NAME:
                     await asyncio.sleep(self._INTERVAL)

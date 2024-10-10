@@ -17,7 +17,7 @@ class BotWidget(QtWidgets.QWidget):
         self.group_widget = None
         self.target_widget = None
 
-        self.bots = config.data.get_depend_bot()
+        self.steps = config.data.get_forest_steps()
 
         self.init_ui()
 
@@ -43,10 +43,11 @@ class BotWidget(QtWidgets.QWidget):
         self.group_widget = BotStepWidget(self._data_change)  # 帶入資料監聽器，有資料異動呼叫
         self.group_widget.item_select_changed(self._group_item_selection_changed)
 
-        # group_add = QtWidgets.QPushButton("+")
-        # group_add.setFixedSize(30, 30)
-        # group_add.setStyleSheet("font-size: 18px")
-        # group_add.clicked.connect(lambda: self.group_widget.show_add_dialog())
+        group_add = QtWidgets.QPushButton("+")
+        group_add.setFixedSize(30, 30)
+        group_add.setStyleSheet("font-size: 18px")
+        group_add.setEnabled(False)
+        group_add.clicked.connect(lambda: self.group_widget.show_add_dialog())
 
         group_title = QtWidgets.QLabel("群組")
         _title_style(group_title)
@@ -54,9 +55,9 @@ class BotWidget(QtWidgets.QWidget):
 
         group_layout.addWidget(group_title)
         group_layout.addWidget(self.group_widget, stretch=1)
-        group_layout.addSpacing(90)
-        # group_layout.addWidget(group_add, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
-        # group_layout.addSpacing(20)
+        group_layout.addSpacing(20)
+        group_layout.addWidget(group_add, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        group_layout.addSpacing(20)
 
         # 右邊的指令列表
         row_layout = QtWidgets.QVBoxLayout()
@@ -82,16 +83,16 @@ class BotWidget(QtWidgets.QWidget):
         list_layout.addLayout(group_layout, stretch=1)
         list_layout.addLayout(row_layout, stretch=2)
 
-        self.group_widget.update_all(self.bots)
+        self.group_widget.update_all(self.steps)
         self.group_widget.setCurrentRow(0)
 
     def _data_change(self):
-        config.data.set_depend_bot(self.bots)
+        config.data.set_forest_steps(self.steps)
 
     def _group_item_selection_changed(self):
         index = self.group_widget.currentRow()
         if index != -1:
-            self.target_widget.update_all(self.bots[index].targets)
+            self.target_widget.update_all(self.steps[index].macros)
 
     def _row_dialog(self):
         if self.group_widget.currentRow() == -1:
@@ -102,4 +103,4 @@ class BotWidget(QtWidgets.QWidget):
 
     def get_run_list(self):
         index = self.group_widget.currentRow()
-        return list(self.bots[index].targets)
+        return list(self.steps[index].targets)

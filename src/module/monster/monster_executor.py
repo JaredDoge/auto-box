@@ -54,7 +54,7 @@ class MonsterExecutor:
                 find_count = len(cv2_util.unique(monster, LAST_DAMAGE_TEMPLATE))
                 single(f'找到{find_count}')
 
-                if find_count >= 3:
+                if find_count >= 2:
                     keyboard.send('esc')
                     single(f'777777777 三終真香')
                     self.stop()

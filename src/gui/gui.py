@@ -10,6 +10,7 @@ from PyQt5.QtWidgets import QLabel
 
 from src import config
 from src.gui.depend.scene_depend import SceneDepend
+from src.gui.forest.scene_forest import SceneForest
 from src.gui.macro.scene_macro import SceneMarco, SwitchListener
 from src.gui.monster.scene_monster import SceneMonster
 from src.module.switch import SwitchState
@@ -165,6 +166,9 @@ class MainWindow(QtWidgets.QMainWindow):
         self.add_list_item("附加", "res/main_tab/tab_depend_box.png", depend)
         self.switch_listener.append(depend)
 
+        # forest = SceneForest()
+        # self.add_list_item("森林", "res/main_tab/tab_depend_box.png", forest)
+        # self.switch_listener.append(forest)
 
         # 啟動鈕
         config.signal.add_listener(self._hotkey)

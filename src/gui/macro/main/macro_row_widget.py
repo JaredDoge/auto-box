@@ -125,7 +125,6 @@ class MarcoRowWidget(DragMoveQListWidget):
             self.rows.insert(row - 1, pop)
         self.data_change()
 
-
     def _add_item(self, index, row: MacroRowModel):
         item = QtWidgets.QListWidgetItem()
         self.insertItem(index, item)
