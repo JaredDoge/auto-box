@@ -5,11 +5,11 @@ from dataclasses import asdict
 import keyboard
 
 from src import config
-from src.module import screen, cv2_util
+from src.module import screen
 from src.module.log import log
-from src.module.macro.macro_task import MacroTaskWrapper
+from src.module.feat.macro.macro_task import MacroTaskWrapper
 from src.module.looper import TaskWrapper
-from src.module.macro.macro_util import get_minimap, find_player2, find_rune_buff
+from src.module.feat.macro.macro_util import get_minimap, find_player2, find_rune_buff
 from enum import Enum
 
 
@@ -146,7 +146,7 @@ class ResolveRuneTaskWrapper(TaskWrapper):
                 log(f'目標位置{try_pos[self.try_index]}')
                 while True:
                     # 遊戲截圖
-                    full = await config.window_tool.get_game_screen()
+                    full = await config.window_tool.wait_game_screen()
                     minimap = get_minimap(full, mm_tl, mm_br)
                     player = find_player2(minimap)
 
@@ -175,7 +175,7 @@ class ResolveRuneTaskWrapper(TaskWrapper):
 
                     await asyncio.sleep(2)
 
-                    full = await config.window_tool.get_game_screen()
+                    full = await config.window_tool.wait_game_screen()
 
                     if find_rune_buff(full):
                         log('成功解輪')

@@ -6,5 +6,6 @@
   "jump": "alt",
   "jump_off": "down+alt",
   "rope": "e",
-  "collect": "space"
+  "collect": "space",
+  "menu": "f1"
 }

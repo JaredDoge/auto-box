@@ -20,9 +20,9 @@ OK_TEMPLATE = cv2.imread('res/depend/ok.png', cv2.IMREAD_GRAYSCALE)
 
 CHANNEL_CHANGE = cv2.imread('res/depend/rescue/channel_change.png', cv2.IMREAD_UNCHANGED)
 
-BAG_SPECIAL_SELECT_TAG_TEMPLATE = cv2.imread('res/depend/bag/bag_special_select_tag.png', cv2.IMREAD_GRAYSCALE)
-BAG_RIGHT_BOTTOM_TEMPLATE = cv2.imread('res/depend/bag/bag_right_bottom.png', cv2.IMREAD_GRAYSCALE)
-BAG_EQUIPMENT_SELECT_TAG = cv2.imread('res/depend/bag/bag_equipment_select_tag.png', cv2.IMREAD_GRAYSCALE)
+BAG_SPECIAL_SELECT_TAG_TEMPLATE = cv2.imread('res/depend/rescue/bag_special_select_tag.png', cv2.IMREAD_GRAYSCALE)
+BAG_RIGHT_BOTTOM_TEMPLATE = cv2.imread('res/depend/rescue/bag_right_bottom.png', cv2.IMREAD_GRAYSCALE)
+BAG_EQUIPMENT_SELECT_TAG = cv2.imread('res/depend/rescue/bag_equipment_select_tag.png', cv2.IMREAD_GRAYSCALE)
 
 MM_TL_TEMPLATE = cv2.imread('res/mini_map/minimap_tl_template.png', cv2.IMREAD_GRAYSCALE)
 MM_BR_TEMPLATE = cv2.imread('res/mini_map/minimap_br_template.png', cv2.IMREAD_GRAYSCALE)
@@ -53,10 +53,17 @@ PORTAL_RANGES = (
 PORTAL_FILTERED = cv2_util.filter_color(cv2.imread('res/mini_map/portal_template.png'), PORTAL_RANGES)
 PORTAL_TEMPLATE = cv2.cvtColor(PORTAL_FILTERED, cv2.COLOR_BGR2GRAY)
 
-
 MONSTER_TL_TEMPLATE = cv2.imread('res/monster/monster_tl_template.png', cv2.IMREAD_GRAYSCALE)
 MONSTER_BR_TEMPLATE = cv2.imread('res/monster/monster_br_template.png', cv2.IMREAD_GRAYSCALE)
 
 LAST_DAMAGE_TEMPLATE = cv2.imread('res/monster/last_damage.png')
 
-FOREST_PASS_TEMPLATE = cv2.imread('res/forest/clear.png', cv2.IMREAD_GRAYSCALE)
+
+FOREST_FAILURE_TEMPLATE = cv2.imread('res/forest/failure.png', cv2.IMREAD_GRAYSCALE)
+
+FOREST_PASS_TEMPLATE = cv2.imread('res/forest/pass.png', cv2.IMREAD_GRAYSCALE)
+FOREST_CLEAR_TEMPLATE_1 = cv2.imread('res/forest/clear_1.png', cv2.IMREAD_GRAYSCALE)
+FOREST_CLEAR_TEMPLATE_2 = cv2.imread('res/forest/clear_2.png', cv2.IMREAD_GRAYSCALE)
+FOREST_CLEAR_TEMPLATE_3 = cv2.imread('res/forest/clear_3.png', cv2.IMREAD_GRAYSCALE)
+FOREST_CLEAR_TEMPLATE_4 = cv2.imread('res/forest/clear_4.png', cv2.IMREAD_GRAYSCALE)
+FOREST_CLEAR_TEMPLATE_5 = cv2.imread('res/forest/clear_5.png', cv2.IMREAD_GRAYSCALE)

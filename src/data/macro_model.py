@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from dataclasses_json import dataclass_json
 
 from src.data.command_model import CommandModel
@@ -12,6 +12,8 @@ class MacroRowModel:
     interval: float
     run: bool
     commands: list[CommandModel]
+    is_point: bool = field(default=False)
+    point: tuple[int, int] = field(default=(0, 0))
 
 
 @dataclass_json

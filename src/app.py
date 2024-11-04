@@ -1,9 +1,6 @@
 import asyncio
-import time
 
 from pytorch.machine import Machine
-from src.module.bot import Bot
-from src.module.macro.bot import MacroBot
 from src.module.signal import Signal
 from src.module.switch import Switch
 from src.data.data import Data

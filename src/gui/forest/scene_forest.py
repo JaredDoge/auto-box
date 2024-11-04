@@ -3,6 +3,7 @@ from PyQt5 import QtWidgets
 from src import config
 from src.gui.common.widget_abc_meta import SwitchListener, QWidgetABCMeta
 from src.gui.forest.bot.bot import BotWidget
+from src.module.feat.forest.forest_executor import ForestExecutor
 
 
 class SceneForest(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
@@ -41,5 +42,5 @@ class SceneForest(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
             }
             """)
 
-        # self.executor = DependExecutor()
-        # self.executor.set_stop_callback(lambda: config.switch.off())
+        self.executor = ForestExecutor()
+        self.executor.set_stop_callback(lambda: config.switch.off())

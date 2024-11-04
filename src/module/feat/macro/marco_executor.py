@@ -2,20 +2,18 @@ import asyncio
 import sys
 import time
 import traceback
-from abc import ABC
-from typing import Dict, TypedDict, Union, Callable
-
-import cv2
+from typing import Union, Callable
 
 from src import config
 from src.data.macro_model import MacroRowModel
-from src.module.forest.forest_util import find_portal, check_pass
 from src.module.log import log
-from src.module.macro.frame_provider import FrameProvider
-from src.module.macro.macro_task import MacroTaskWrapper
-from src.module.macro.macro_util import find_minimap, get_minimap, find_rune, find_player2, find_rune_lock_buff_p1, find_rune_lock_buff_p2
-from src.module.macro.resolve_rune_task import ResolveRuneTaskWrapper
+from src.module.feat.macro.frame_provider import FrameProvider
+from src.module.feat.macro.macro_task import MacroTaskWrapper
+from src.module.feat.macro.macro_util import find_minimap, get_minimap, find_rune, find_player2, find_rune_lock_buff_p1, find_rune_lock_buff_p2
+from src.module.feat.macro.resolve_rune_task import ResolveRuneTaskWrapper
 from src.module import screen
+from src.module.tools.mini_map import find_portal
+
 
 class MacroExecutor(FrameProvider):
     def get_frame(self):
@@ -63,20 +61,20 @@ class MacroExecutor(FrameProvider):
             mm_tl, mm_br = await find_minimap()
 
             while True:
-                full = await config.window_tool.get_game_screen()
+                full = await config.window_tool.wait_game_screen()
 
                 if full.size <= 0:
-                    screen.save_frame(full, f'截圖長度0_{time.time()}.png')
+                    log('截圖size為0')
+                    await asyncio.sleep(1)
                     continue
 
                 minimap = get_minimap(full, mm_tl, mm_br)
 
                 if minimap.size <= 0:
-                    screen.save_frame(full, f'小地圖長度0_{time.time()}.png')
+                    log('小地圖size為0')
+                    await asyncio.sleep(1)
                     continue
 
-                clear = check_pass(full)
-                portal = find_portal(minimap)
                 rune = find_rune(minimap)
                 player = find_player2(minimap)
 
@@ -90,7 +88,6 @@ class MacroExecutor(FrameProvider):
                         'player': player
                     }
                 }
-                log(f"player: {player}, rune: {rune}, portal: {portal}, clear: {clear}")
 
                 if self.current_task and self.current_task.get_name() == resolve_rune.NAME:
                     await asyncio.sleep(self._INTERVAL)

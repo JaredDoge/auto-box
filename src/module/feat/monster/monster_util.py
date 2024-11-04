@@ -13,7 +13,7 @@ def get_monster(full, tl,br):
 async def find_monster():
     while True:
         # 遊戲截圖
-        frame = await config.window_tool.get_game_screen()
+        frame = await config.window_tool.wait_game_screen()
 
         tl_result = cv2_util.single_match(frame, MONSTER_TL_TEMPLATE)
         br_result = cv2_util.single_match(frame, MONSTER_BR_TEMPLATE)

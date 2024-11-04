@@ -1,13 +1,9 @@
-from abc import ABC, abstractmethod, ABCMeta
-
 from PyQt5 import QtWidgets
 
 from src import config
 from src.gui.common.widget_abc_meta import SwitchListener, QWidgetABCMeta
 from src.gui.macro.main.macro_bot import MacroBot
-from src.module.log import log
-from src.module.looper import Looper
-from src.module.macro.marco_executor import MacroExecutor
+from src.module.feat.macro.marco_executor import MacroExecutor
 
 
 def _already_stop():

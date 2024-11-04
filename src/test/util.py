@@ -1,4 +1,3 @@
-
 import cv2
 import numpy as np
 import time
@@ -30,10 +29,7 @@ def match(frame, template_, threshold=0.8):
 
 def get_center(template_, tl):
     _, w, h = template_.shape[::-1]
-    return (tl[0] + w/2), (tl[1] + h/2)
-
-
-
+    return (tl[0] + w / 2), (tl[1] + h / 2)
 
 
 def template(img, template_, template_threshold=0.8):

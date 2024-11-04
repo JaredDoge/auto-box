@@ -1,47 +1,63 @@
-import time
-import cv2
+import asyncio
+
 import keyboard
 import mouse
 
-from src.module import util
-import mss
-import numpy as np
 from src import config
-from src.module.log import single, log
-from src.module.template import *
+from src.data.depend_model import RescueSettingModel
+from src.module import cv2_util, template
+from src.module.log import log
 
 
-def rescue(window) -> bool:
-
-    def _screenshot(sct, delay=1):
-        try:
-            return np.array(sct.grab(window))
-        except Exception as e:
-            time.sleep(delay)
-    brb_result = None
+async def rescue() -> bool:
+    model: RescueSettingModel = config.data.get_depend_rescue_setting()
+    result = None
     step = 0
-    while config.switch.is_on():
-
-        with mss.mss() as sct:
-            # 楓谷截圖
-            frame = _screenshot(sct, window)
-
-        if frame is None:
-            continue
+    while True:
+        full = await config.window_tool.wait_game_screen()
 
         if step == 0:
-            brb_result = util.single_match(frame, BAG_RIGHT_BOTTOM_TEMPLATE)
+            log('step 0 開啟設定')
+            if not cv2_util.single_match(full, template.CHANNEL_CHANGE):  # 找換頻選項
+                keyboard.send(model.setting)  # 按下設定鍵
+                await asyncio.sleep(1)
+                continue
+            step += 1
+            continue
+        elif step == 1:
+            log('step 1 換頻')
+            keyboard.send('enter')
+            await asyncio.sleep(1)
+            keyboard.send('right')  # 下個頻道
+            await asyncio.sleep(1)
+            keyboard.send('enter')
+            step += 1
+            continue
+        elif step == 2:
+            log('step 2 等待換頻')
+
+            step += 1
+            continue
             if not brb_result:
-                log("找不到背包右下的擴充背包阿")
+                log("找不到背包右下的擴充背包")
                 return False
             step += 1
             continue
-        if step == 1:
+
+        if step == 0:
+            log('step 0 找背包')
+            brb_result = cv2_util.single_match(full, template.BAG_RIGHT_BOTTOM_TEMPLATE)
+            if not brb_result:
+                log("找不到背包右下的擴充背包")
+                return False
+            step += 1
+            continue
+        elif step == 1:
             log('step 1 找特殊欄')
             # 找不到就按一次tab
-            if not util.match(frame, BAG_SPECIAL_SELECT_TAG_TEMPLATE):
+            if not cv2_util.match(full, template.BAG_SPECIAL_SELECT_TAG_TEMPLATE):
                 keyboard.send('tab')
-                time.sleep(0.2)
+                await asyncio.sleep(0.2)
                 continue
             step += 1
             continue
@@ -98,5 +114,3 @@ def rescue(window) -> bool:
             log('搶救成功，繼續洗囉')
             # 搶救成功
             return True
-
-

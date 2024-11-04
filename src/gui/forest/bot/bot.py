@@ -1,12 +1,30 @@
 from typing import List
 
 from PyQt5 import QtWidgets, QtCore
-from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QEvent
 from PyQt5.QtGui import QFont
 
 from src import config
+from src.gui.forest.bot.bot_macro import PointItemWidget, BotMacroWidget
 from src.gui.forest.bot.bot_step import BotStepWidget
 from src.gui.macro.main.macro_row_widget import MarcoRowWidget
+
+
+class DoubleClickButton(QtWidgets.QPushButton):
+    # 自定义双击信号，类似于 clicked 信号
+    doubleClicked = pyqtSignal()
+
+    def __init__(self, text="", parent=None):
+        super().__init__(text, parent)
+
+    # 使用事件过滤器或者覆写方法捕捉双击事件
+    def mouseDoubleClickEvent(self, event):
+        #
+        if event.type() == QEvent.MouseButtonDblClick:
+            # 发射自定义的双击信号
+            self.doubleClicked.emit()
+
+        super().mouseDoubleClickEvent(event)
 
 
 class BotWidget(QtWidgets.QWidget):
@@ -61,12 +79,20 @@ class BotWidget(QtWidgets.QWidget):
 
         # 右邊的指令列表
         row_layout = QtWidgets.QVBoxLayout()
-        self.target_widget = MarcoRowWidget(self._data_change)  # 帶入資料監聽器，有資料異動呼叫
+        self.target_widget = BotMacroWidget(self._data_change)  # 帶入資料監聽器，有資料異動呼叫
 
+        add_layout = QtWidgets.QHBoxLayout()
         row_add = QtWidgets.QPushButton("+")
         row_add.setFixedSize(30, 30)
         row_add.setStyleSheet("font-size: 18px")
         row_add.clicked.connect(lambda: self._row_dialog())
+
+        row_add2 = QtWidgets.QPushButton("新增定位")
+        row_add2.setFixedSize(100, 30)
+        row_add2.setStyleSheet("font-size: 18px")
+        row_add2.clicked.connect(lambda:  self._row_point_dialog())
+        add_layout.addWidget(row_add, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        add_layout.addWidget(row_add2, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
 
         row_title = QtWidgets.QLabel("目標屬性")
         _title_style(row_title)
@@ -75,7 +101,7 @@ class BotWidget(QtWidgets.QWidget):
         row_layout.addWidget(row_title)
         row_layout.addWidget(self.target_widget, stretch=1)
         row_layout.addSpacing(20)
-        row_layout.addWidget(row_add, alignment=QtCore.Qt.AlignmentFlag.AlignHCenter)
+        row_layout.addLayout(add_layout, )
         row_layout.addSpacing(20)
 
         # 将两个垂直布局添加到水平布局中
@@ -101,6 +127,12 @@ class BotWidget(QtWidgets.QWidget):
 
         self.target_widget.show_add_dialog()
 
+    def _row_point_dialog(self):
+        if self.group_widget.currentRow() == -1:
+            QtWidgets.QMessageBox.warning(self, "", "請先選擇群組")
+            return
+
+        self.target_widget.show_add_point_dialog()
+
     def get_run_list(self):
-        index = self.group_widget.currentRow()
-        return list(self.steps[index].targets)
+        return list(self.steps)

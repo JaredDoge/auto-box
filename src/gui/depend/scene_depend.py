@@ -4,7 +4,7 @@ from src import config
 from src.gui.common.widget_abc_meta import SwitchListener, QWidgetABCMeta
 from src.gui.depend.attr.attr import AttrWidget
 from src.gui.depend.bot.bot import BotWidget
-from src.module.depend.depend_executor import DependExecutor
+from src.module.feat.depend.depend_executor import DependExecutor
 
 
 class SceneDepend(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):

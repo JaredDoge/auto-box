@@ -1,6 +1,5 @@
 # 開關
 from pytorch.machine import Machine
-from src.module.macro.bot import MacroBot
 from src.module.signal import Signal
 from src.module.switch import Switch
 from src.module.looper import Looper

@@ -2,7 +2,6 @@ import time
 from dataclasses import dataclass
 from typing import List
 
-import cv2
 import threading
 import ctypes
 import mss
@@ -14,11 +13,10 @@ import keyboard
 from ctypes import wintypes
 
 from src import config
-from src.module import util
+from src.test import util
 from src.module.log import log, single
-from src.module.rescue import rescue
+from src.test.rescue import rescue
 from src.module.template import *
-from src.data.data import Data
 
 user32 = ctypes.windll.user32
 user32.SetProcessDPIAware()
@@ -174,7 +172,8 @@ class Bot:
         all_equal = True
         single('------------------------')
         for target in targets:
-            find_count = len(util.template(self.box_frame, config.data.get_depend_attrs_template(target.attr), self.base.threshold))
+            find_count = len(
+                util.template(self.box_frame, config.data.get_depend_attrs_template(target.attr), self.base.threshold))
             single(f'{target.attr}:目標{target.count},找到{find_count}')
             if find_count != target.count:
                 all_equal = False

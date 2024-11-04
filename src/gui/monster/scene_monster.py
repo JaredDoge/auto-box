@@ -1,10 +1,8 @@
-from abc import ABC, abstractmethod, ABCMeta
-
 from PyQt5 import QtWidgets
 
 from src import config
 from src.gui.common.widget_abc_meta import SwitchListener, QWidgetABCMeta
-from src.module.monster.monster_executor import MonsterExecutor
+from src.module.feat.monster.monster_executor import MonsterExecutor
 
 
 def _already_stop():

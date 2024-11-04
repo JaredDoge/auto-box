@@ -1,21 +1,17 @@
 import asyncio
 import sys
-import time
 import traceback
 from dataclasses import dataclass
-from typing import Dict, TypedDict, Union, Callable, Tuple, List
+from typing import Union, Callable, Tuple, List
 
-import cv2
 import keyboard
 import mouse
 
 from src import config
 from src.data.depend_model import DependTargetModel
-from src.data.macro_model import MacroRowModel
-from src.module import screen, cv2_util
-from src.module.depend import depend_util
+from src.module import cv2_util
+from src.module.feat.depend import depend_util
 from src.module.log import log, single
-from enum import Enum
 
 
 @dataclass
@@ -90,7 +86,7 @@ class DependExecutor:
                 config.window_tool.to_foreground()
                 log('等待遊戲視窗中')
 
-            full = await config.window_tool.get_game_screen()
+            full = await config.window_tool.wait_game_screen()
             geo = config.window_tool.get_geometry()
             box = self._find_box_info(geo['left'], geo['top'], full)
             if box is None:
@@ -104,7 +100,7 @@ class DependExecutor:
             # 嘗試檢測附加框卡住秒數
             attempt = 5
             while True:
-                full = await config.window_tool.get_game_screen()
+                full = await config.window_tool.wait_game_screen()
 
                 box_frame = depend_util.get_block_frame(full, box.box_block)
 

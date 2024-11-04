@@ -13,3 +13,4 @@ class RuneSettingModel:
     jump: str
     rope: str
     collect: str
+    menu: str

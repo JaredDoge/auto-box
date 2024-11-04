@@ -36,12 +36,12 @@ class WindowTool:
         geometry = {'left': rect[0], 'top': rect[1], 'width': rect[2] - rect[0], 'height': rect[3] - rect[1]}
         return geometry
 
-    async def get_game_screen(self):
+    def get_game_screen(self):
+        return screen.capture(self.get_geometry())
+
+    async def wait_game_screen(self):
         while True:
-            # 定位遊戲
-            geometry = self.get_geometry()
-            # 遊戲截圖
-            frame = screen.capture(geometry)
+            frame = self.get_game_screen()
             if frame is None:
                 await asyncio.sleep(1)
                 continue

@@ -3,7 +3,7 @@ import os
 from src import config
 from src.module import cv2_util, screen
 from src.module import template
-from src.module.cv import cv_imread
+from src.module.cv2_util import read_imread_by_path
 
 
 def get_block_frame(full, block):
@@ -84,4 +84,4 @@ def legend_exist(frame):
 
 
 def get_attr_template(attrs):
-    return {a.name: cv_imread(a.path) for a in attrs if os.path.exists(a.path)}
+    return {a.name: read_imread_by_path(a.path) for a in attrs if os.path.exists(a.path)}

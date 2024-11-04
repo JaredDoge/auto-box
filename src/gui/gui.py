@@ -1,4 +1,5 @@
 import sys
+import time
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -13,6 +14,7 @@ from src.gui.depend.scene_depend import SceneDepend
 from src.gui.forest.scene_forest import SceneForest
 from src.gui.macro.scene_macro import SceneMarco, SwitchListener
 from src.gui.monster.scene_monster import SceneMonster
+from src.module.log import log
 from src.module.switch import SwitchState
 
 
@@ -114,7 +116,6 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def __init__(self):
         super().__init__()
-
         self.setWindowTitle("MapleBot")
         self.setFixedSize(600, 600)
 
@@ -166,9 +167,11 @@ class MainWindow(QtWidgets.QMainWindow):
         self.add_list_item("附加", "res/main_tab/tab_depend_box.png", depend)
         self.switch_listener.append(depend)
 
-        # forest = SceneForest()
-        # self.add_list_item("森林", "res/main_tab/tab_depend_box.png", forest)
-        # self.switch_listener.append(forest)
+        forest = SceneForest()
+        self.add_list_item("森林", "res/main_tab/tab_depend_box.png", forest)
+        self.switch_listener.append(forest)
+
+        self.list_widget.setCurrentRow(3)
 
         # 啟動鈕
         config.signal.add_listener(self._hotkey)
@@ -178,10 +181,13 @@ class MainWindow(QtWidgets.QMainWindow):
         self._hide_mask()
 
         config.switch.set_switch_listener(lambda state: self.switch_state_signal.emit(state))
+        self.last_f_down_time = None
 
     def _hotkey(self, event):
-        if event.name == 'f4' and event.event_type == 'down':
-            self._switch()
+        if event.name == 'f4':
+            if event.event_type == 'down':
+                self._switch()
+            return True
 
     def _switch(self):
         self.switch_listener[self.list_widget.currentRow()].switch()

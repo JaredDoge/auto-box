@@ -66,7 +66,7 @@ def find_player2(minimap):
 async def find_minimap():
     while True:
         # 遊戲截圖
-        frame = await config.window_tool.get_game_screen()
+        frame = await config.window_tool.wait_game_screen()
 
         tl, _ = cv2_util.single_match(frame, MM_TL_TEMPLATE)
         _, br = cv2_util.single_match(frame, MM_BR_TEMPLATE, 0.5)

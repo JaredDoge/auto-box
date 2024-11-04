@@ -5,6 +5,19 @@ import mss
 import numpy as np
 
 
+def cut_by_tl_br(full, block):
+    tl, br = block
+    return full[tl[1]:br[1], tl[0]:br[0]]
+
+
+def cut_by_geometry(full, geometry):
+    left = geometry['left']
+    top = geometry['top']
+    width = geometry['width']
+    height = geometry['height']
+    return full[top:top + height, left:left + width]
+
+
 def capture(window):
     def _screenshot(s):
         try:

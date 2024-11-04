@@ -11,10 +11,10 @@ class Signal:
             raise ValueError("Listener must be a callable function.")
 
         if listener not in self.listeners:
-            if index:
-                self.listeners.insert(index, listener)
-            else:
+            if index is None:
                 self.listeners.append(listener)
+            else:
+                self.listeners.insert(index, listener)
 
     def remove_listener(self, listener):
         if listener not in self.listeners:
@@ -25,7 +25,7 @@ class Signal:
     def _on_event(self, event):
         for listener in self.listeners:
             if listener(event):
-                break
+                return
 
     def hook(self):
         keyboard.hook(self._on_event)

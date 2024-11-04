@@ -1,17 +1,14 @@
 import asyncio
 import sys
-import time
 import traceback
-from typing import Dict, TypedDict, Union, Callable
+from typing import Union, Callable
 
-import cv2
 import keyboard
 
 from src import config
-from src.data.macro_model import MacroRowModel
-from src.module import screen, cv2_util
+from src.module import cv2_util
 from src.module.log import log, single
-from src.module.monster.monster_util import find_monster, get_monster
+from src.module.feat.monster.monster_util import find_monster, get_monster
 from src.module.template import LAST_DAMAGE_TEMPLATE
 
 
@@ -48,7 +45,7 @@ class MonsterExecutor:
 
             while True:
 
-                full = await config.window_tool.get_game_screen()
+                full = await config.window_tool.wait_game_screen()
                 monster = get_monster(full, monster_tl, monster_br)
 
                 find_count = len(cv2_util.unique(monster, LAST_DAMAGE_TEMPLATE))

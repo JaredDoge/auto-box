@@ -11,35 +11,22 @@ def filter_color(img, ranges):
     :param ranges:  一個包含上下界的 HSV 範圍元組列表。
     :return:        過濾後的 IMG 副本。如果發生錯誤，返回 None。
     """
-    try:
-        if img is None or img.size == 0:
-            raise ValueError("圖片加載失敗或為空。請檢查圖片路徑或格式。")
+    # 轉換圖像到 HSV 色彩空間
+    hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-        # 轉換圖像到 HSV 色彩空間
-        hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    # 創建初始遮罩
+    mask = cv2.inRange(hsv, ranges[0][0], ranges[0][1])
 
-        # 創建初始遮罩
-        mask = cv2.inRange(hsv, ranges[0][0], ranges[0][1])
+    # 遍歷範圍並合併遮罩
+    for i in range(1, len(ranges)):
+        mask = cv2.bitwise_or(mask, cv2.inRange(hsv, ranges[i][0], ranges[i][1]))
 
-        # 遍歷範圍並合併遮罩
-        for i in range(1, len(ranges)):
-            mask = cv2.bitwise_or(mask, cv2.inRange(hsv, ranges[i][0], ranges[i][1]))
+    # 將遮罩應用於圖像
+    color_mask = mask > 0
+    result = np.zeros_like(img, np.uint8)
+    result[color_mask] = img[color_mask]
 
-        # 將遮罩應用於圖像
-        color_mask = mask > 0
-        result = np.zeros_like(img, np.uint8)
-        result[color_mask] = img[color_mask]
-
-        return result
-
-    except cv2.error as e:
-        print(f"OpenCV 錯誤: {e}")
-        screen.show_frame(img)
-    except Exception as e:
-        print(f"一般錯誤: {e}")
-        screen.show_frame(img)
-    # 返回 None 表示處理失敗
-    return None
+    return result
 
 
 def get_center(template, tl):
@@ -213,3 +200,8 @@ def unique(img, template, template_threshold=0.8):
     keep_dets = py_nms(data_hstack, thresh)
     dets = data_hstack[keep_dets]  # 最终的nms获得的矩形框
     return dets
+
+
+def read_imread_by_path(path):
+    cv_img = cv2.imdecode(np.fromfile(path, dtype=np.uint8), cv2.IMREAD_COLOR)
+    return cv_img

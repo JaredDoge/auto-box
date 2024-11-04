@@ -12,6 +12,7 @@ from src.data.macro_model import MacroRowModel
 from src.data.command_model import DelayCommandModel, KeyboardCommandModel, CommandModel
 from src.gui.common.drag_move_qlist import DragMoveQListWidget
 from src.gui.common.ignore_right_menu import IgnoreRightButtonMenu
+from src.module.log import log
 
 
 class DelayInputDialog(QtWidgets.QDialog):
@@ -380,6 +381,7 @@ class CommandSetEditDialog(QtWidgets.QDialog):
         self.record_button.setAutoDefault(False)  # 取消取到焦點時，按enter會觸發按鈕事件
         self.record_button.setFixedHeight(40)
         self.record_button.clicked.connect(self.toggle_recording)
+        self.record_button.setFocusPolicy(Qt.NoFocus)  # 防止聚焦，避免按下空白鍵時會觸發點擊事件
         layout.addWidget(self.record_button)
 
         layout.addSpacing(5)
@@ -401,8 +403,8 @@ class CommandSetEditDialog(QtWidgets.QDialog):
         self.block_record_signal.connect(self.start_block_recording)
 
     def keyPressEvent(self, event):
-        # 忽略esc關閉的行為
         if event.key() == Qt.Key_Escape:
+            # 忽略esc關閉的行為
             event.ignore()
         else:
             super().keyPressEvent(event)
