@@ -2,6 +2,7 @@ import asyncio
 import threading
 import time
 from abc import ABC, abstractmethod
+from enum import Enum
 
 from src import config
 from src.module.log import log
@@ -12,6 +13,12 @@ class TaskWrapper(ABC):
     @abstractmethod
     async def create(self, *args, **kwarg):
         pass
+
+
+class MatchType(Enum):
+    EXACT = "exact"  # 完全匹配
+    STARTS_WITH = "starts_with"  # 開始字串匹配
+    CONTAINS = "contains"  # 包含字串匹配
 
 
 class TaskController:
@@ -26,20 +33,42 @@ class TaskController:
         """返回最近的任務，即列表中的最後一個任務"""
         return self._tasks[-1] if self._tasks else None
 
-    def tasks(self, task_name):
-        return [task for task in self._tasks if task.get_name() == task_name]
+    def tasks(self, task_name, match_type=MatchType.EXACT):
+        """
+        根據給定的任務名稱和匹配類型返回任務列表。
 
-    def task(self, task_name):
-        return next((task for task in self._tasks if task.get_name() == task_name), None)
+        參數：
+        - task_name: 要匹配的任務名稱或子字串
+        - match_type: 指定匹配類型
+        """
+        if match_type == MatchType.STARTS_WITH:
+            return [task for task in self._tasks if task.get_name().startswith(task_name)]
+        elif match_type == MatchType.CONTAINS:
+            return [task for task in self._tasks if task_name in task.get_name()]
+        else:
+            # 默認為 MatchType.EXACT
+            return [task for task in self._tasks if task.get_name() == task_name]
 
-    def is_current_task(self, task_name):
-        """檢查最近的任務名稱是否為指定的名稱"""
-        return self.current_task and self.current_task.get_name() == task_name
+    def task(self, task_name, match_type=MatchType.EXACT):
+        """
+        根據給定的任務名稱和匹配類型返回單個任務。
 
-    def is_running(self, task_name):
-        return any(task.get_name() == task_name for task in self._tasks)
+        參數：
+        - task_name: 要匹配的任務名稱或子字串
+        - match_type: 指定匹配類型
+        """
+        tasks = self.tasks(task_name, match_type)
+        return tasks[0] if tasks else None
 
-    async def cancel_task(self, task_name=None):
+    def is_running(self, task_name, match_type=MatchType.EXACT):
+        """檢查是否有任務正在運行，並支持匹配類型"""
+        return any(self.tasks(task_name, match_type))
+
+    async def cancel_task(self, task_name=None, match_type=MatchType.EXACT):
+        """
+        取消指定名稱的任務，並支援使用匹配類型（match_type）來篩選任務。
+        """
+
         async def _cancel(task):
             if task.cancelled():
                 return
@@ -49,10 +78,9 @@ class TaskController:
             except asyncio.CancelledError:
                 pass
 
-        """取消指定名稱的任務或取消所有任務"""
         if task_name:
-            # 取消指定名稱的任務
-            tasks_to_cancel = [task for task in self._tasks if task.get_name() == task_name]
+            # 根據 match_type 選擇篩選條件
+            tasks_to_cancel = self.tasks(task_name, match_type)
 
             # 先取消所有匹配的任務
             for task in tasks_to_cancel:

@@ -11,8 +11,6 @@ user32 = ctypes.windll.user32
 user32.SetProcessDPIAware()
 
 
-# maplehwnd = win32gui.FindWindow(None, "菇菇谷")
-# position = win32gui.GetWindowRect(maplehwnd)
 class WindowTool:
 
     def __init__(self):
@@ -38,6 +36,10 @@ class WindowTool:
 
     def get_game_screen(self):
         return screen.capture(self.get_geometry())
+
+    def xy_on_screen(self, x, y):
+        geo = self.get_geometry()
+        return x + geo['left'], y + geo['top']
 
     async def wait_game_screen(self):
         while True:

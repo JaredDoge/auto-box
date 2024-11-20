@@ -1,12 +1,4 @@
-import asyncio
-from enum import Enum
-
-import keyboard
-
-from src import config
-from src.module import cv2_util, template, screen
-from src.module.feat.forest import forest_util
-from src.module.log import log
+from src.module import cv2_util, template
 
 
 def find_player2(minimap):
@@ -49,7 +41,3 @@ def find_minimap(frame):
         max(mm_tl[1] + pt_height, br[1] - minimap_bottom_border)
     )
     return mm_tl, mm_br
-
-
-
-

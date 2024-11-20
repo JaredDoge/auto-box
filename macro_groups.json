@@ -511,7 +511,7 @@
             {
                 "name": "1232",
                 "count": -1,
-                "interval": 0.7,
+                "interval": 0.3,
                 "run": true,
                 "commands": [
                     {
@@ -522,73 +522,73 @@
                     },
                     {
                         "command": "delay",
-                        "time": 0.07,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "left",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.08,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "left",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.07,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "left",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.14,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "enter",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.08,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "up",
-                        "event_name": "enter",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
-                        "time": 0.08,
-                        "__type": "DelayCommandModel"
-                    },
-                    {
-                        "command": "keyboard",
-                        "event_type": "down",
-                        "event_name": "enter",
-                        "__type": "KeyboardCommandModel"
-                    },
-                    {
-                        "command": "delay",
                         "time": 0.09,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "left",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.08,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "left",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.08,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "left",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.07,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "enter",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.1,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "up",
+                        "event_name": "enter",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.07,
+                        "__type": "DelayCommandModel"
+                    },
+                    {
+                        "command": "keyboard",
+                        "event_type": "down",
+                        "event_name": "enter",
+                        "__type": "KeyboardCommandModel"
+                    },
+                    {
+                        "command": "delay",
+                        "time": 0.08,
                         "__type": "DelayCommandModel"
                     },
                     {

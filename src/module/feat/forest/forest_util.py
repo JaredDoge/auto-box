@@ -91,23 +91,22 @@ def get_level(frame):
 
 
 def check_clear(full):
-    if cv2_util.multi_match(full, template.FOREST_CLEAR_TEMPLATE_1, threshold=0.8):
+    if cv2_util.single_match(full, template.FOREST_CLEAR_TEMPLATE_1, threshold=0.8):
         return True
-    if cv2_util.multi_match(full, template.FOREST_CLEAR_TEMPLATE_2, threshold=0.8):
+    if cv2_util.single_match(full, template.FOREST_CLEAR_TEMPLATE_2, threshold=0.8):
         return True
-    if cv2_util.multi_match(full, template.FOREST_CLEAR_TEMPLATE_3, threshold=0.8):
+    if cv2_util.single_match(full, template.FOREST_CLEAR_TEMPLATE_3, threshold=0.8):
         return True
-    if cv2_util.multi_match(full, template.FOREST_CLEAR_TEMPLATE_4, threshold=0.8):
+    if cv2_util.single_match(full, template.FOREST_CLEAR_TEMPLATE_4, threshold=0.8):
         return True
-    if cv2_util.multi_match(full, template.FOREST_CLEAR_TEMPLATE_5, threshold=0.8):
+    if cv2_util.single_match(full, template.FOREST_CLEAR_TEMPLATE_5, threshold=0.8):
         return True
     return False
 
 
 def check_failure(frame):
-    if cv2_util.multi_match(frame, template.FOREST_FAILURE_TEMPLATE, threshold=0.8):
-        return True
+    return cv2_util.single_match(frame, template.FOREST_FAILURE_TEMPLATE, threshold=0.8)
 
 
 def check_pass(full):
-    return cv2_util.multi_match(full, template.FOREST_PASS_TEMPLATE, threshold=0.9)
+    return cv2_util.single_match(full, template.FOREST_PASS_TEMPLATE, threshold=0.9)

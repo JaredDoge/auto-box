@@ -14,6 +14,7 @@ def cleanup():
     # config.macro_bot.stop()
     config.signal.unhook()
     config.machine.cleanup()
+    # config.window_tool.release()
 
 
 async def _startup():

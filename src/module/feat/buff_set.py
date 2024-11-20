@@ -4,8 +4,17 @@ import time
 import json
 from datetime import timedelta
 import keyboard
+import mouse
 
+from src import config
+from src.module import screen, cv2_util, template
 from src.module.log import log
+
+
+def find_ok(full):
+    geo = {'left': 544, 'top': 420, 'width': 287, 'height': 64}
+    cut = screen.cut_by_geometry(full, geo)
+    return cv2_util.single_match(cut, template.BUFF_OK_TEMPLATE, threshold=0.8)
 
 
 class BuffSet:
@@ -61,7 +70,28 @@ class BuffSet:
                     # 更新最後使用時間
                     self.last_used[key] = current_time
                     # 等待一小段時間，避免按鍵太快
-                    await asyncio.sleep(1)
+                    await asyncio.sleep(0.7)
+
+                    # 公會技能在cd還沒到時就用 會出現框要點OK
+
+                    # 滑鼠先移到別的地方
+                    x, y = config.window_tool.xy_on_screen(544, 420)
+                    mouse.move(x, y)
+                    await asyncio.sleep(0.3)
+
+                    full = await config.window_tool.wait_game_screen()
+                    ok = find_ok(full)
+                    if ok:
+                        log("找到OK")
+                        # 移到OK
+                        tl, br = ok
+                        x, y = cv2_util.get_center(template.BUFF_OK_TEMPLATE, (tl[0] + 544, tl[1] + 420))
+                        x, y = config.window_tool.xy_on_screen(x, y)
+                        mouse.move(x, y)
+                        await asyncio.sleep(0.1)
+                        mouse.click()
+                        await asyncio.sleep(0.3)
+
                 else:
                     remaining_time = cd_time - elapsed_time
                     log(f"buff: {key} 還在CD，剩: {str(timedelta(seconds=int(remaining_time)))}")

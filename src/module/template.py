@@ -58,7 +58,6 @@ MONSTER_BR_TEMPLATE = cv2.imread('res/monster/monster_br_template.png', cv2.IMRE
 
 LAST_DAMAGE_TEMPLATE = cv2.imread('res/monster/last_damage.png')
 
-
 FOREST_FAILURE_TEMPLATE = cv2.imread('res/forest/failure.png', cv2.IMREAD_GRAYSCALE)
 
 FOREST_PASS_TEMPLATE = cv2.imread('res/forest/pass.png', cv2.IMREAD_GRAYSCALE)
@@ -67,3 +66,9 @@ FOREST_CLEAR_TEMPLATE_2 = cv2.imread('res/forest/clear_2.png', cv2.IMREAD_GRAYSC
 FOREST_CLEAR_TEMPLATE_3 = cv2.imread('res/forest/clear_3.png', cv2.IMREAD_GRAYSCALE)
 FOREST_CLEAR_TEMPLATE_4 = cv2.imread('res/forest/clear_4.png', cv2.IMREAD_GRAYSCALE)
 FOREST_CLEAR_TEMPLATE_5 = cv2.imread('res/forest/clear_5.png', cv2.IMREAD_GRAYSCALE)
+
+MENU_TEMPLATE = cv2.imread('res/menu/icon.png', cv2.IMREAD_GRAYSCALE)
+MENU_EVERY_DAY_TEMPLATE = cv2.imread('res/menu/every_day.png', cv2.IMREAD_GRAYSCALE)
+MENU_FOREST_TEMPLATE = cv2.imread('res/menu/forest.png', cv2.IMREAD_GRAYSCALE)
+
+BUFF_OK_TEMPLATE = cv2.imread('res/buff/buff_ok.png', cv2.IMREAD_GRAYSCALE)
