@@ -171,7 +171,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.add_list_item("森林", "res/main_tab/tab_depend_box.png", forest)
         self.switch_listener.append(forest)
 
-        self.list_widget.setCurrentRow(3)
+        self.list_widget.setCurrentRow(0)
 
         # 啟動鈕
         config.signal.add_listener(self._hotkey)

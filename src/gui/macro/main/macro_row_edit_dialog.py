@@ -19,27 +19,69 @@ class DelayInputDialog(QtWidgets.QDialog):
     def __init__(self, delay: DelayCommandModel = None):
         super().__init__()
 
-        self.delay = copy.deepcopy(delay) if delay else DelayCommandModel(time=0.5)
+        self.delay = copy.deepcopy(delay) if delay else DelayCommandModel(type='time', time=0.5)
 
-        self.setWindowTitle("延遲時間(秒)")
+        self.setWindowTitle("延遲設定")
+        self.setFixedSize(350, 130)  # 固定視窗大小
 
         layout = QtWidgets.QVBoxLayout(self)
 
-        # 说明标签
-        explanation_label = QtWidgets.QLabel("小數點後最多2位")
-        layout.addWidget(explanation_label)
+        # 延遲類型選擇
+        self.type_combo = QtWidgets.QComboBox()
+        self.type_combo.addItems(["根據時間", "根據人物位置"])
+        self.type_combo.setCurrentIndex(0 if self.delay.type == 'time' else 1)
+        self.type_combo.currentIndexChanged.connect(self._on_type_changed)
+        layout.addWidget(self.type_combo)
 
-        # 输入框
-        self.input_edit = QtWidgets.QLineEdit()
+        # 時間延遲設定
+        self.time_widget = QtWidgets.QWidget()
+        time_layout = QtWidgets.QVBoxLayout(self.time_widget)
+        time_layout.setContentsMargins(0, 0, 0, 0)
+        time_explanation = QtWidgets.QLabel("單位為秒，小數點後最多2位")
+        time_layout.addWidget(time_explanation)
+        self.time_edit = QtWidgets.QLineEdit()
         validator = QDoubleValidator()
         validator.setDecimals(2)
-        self.input_edit.setValidator(validator)
-        self.input_edit.setText(f'{self.delay.time}')
-        layout.addWidget(self.input_edit)
-        # self.input_edit.selectAll()
+        self.time_edit.setValidator(validator)
+        self.time_edit.setText(f'{self.delay.time}')
+        time_layout.addWidget(self.time_edit)
+        layout.addWidget(self.time_widget)
+
+        # 邊界延遲設定
+        self.border_widget = QtWidgets.QWidget()
+        border_layout = QtWidgets.QVBoxLayout(self.border_widget)
+        border_layout.setContentsMargins(0, 0, 0, 0)
+        
+        # 第一行：延遲到人物位置
+        position_label = QtWidgets.QLabel("延遲到人物位置")
+        border_layout.addWidget(position_label)
+        
+        # 第二行：運算符和比例
+        second_line_widget = QtWidgets.QWidget()
+        second_line_layout = QtWidgets.QHBoxLayout(second_line_widget)
+        second_line_layout.setContentsMargins(0, 0, 0, 0)
+        
+        # 運算符選擇
+        self.operator_combo = QtWidgets.QComboBox()
+        self.operator_combo.addItems(["小於", "小於等於", "等於", "大於等於", "大於"])
+        self.operator_combo.setCurrentText(self._get_operator_text(self.delay.operator))
+        second_line_layout.addWidget(self.operator_combo)
+        
+        # 比例設定
+        second_line_layout.addWidget(QtWidgets.QLabel("地圖寬度百分比(最左0,最右100)"))
+        self.ratio_edit = QtWidgets.QLineEdit()
+        validator = QIntValidator(0, 100)
+        self.ratio_edit.setValidator(validator)
+        self.ratio_edit.setText(f'{self.delay.ratio}')
+        second_line_layout.addWidget(self.ratio_edit)
+        second_line_layout.addWidget(QtWidgets.QLabel("%"))
+        
+        border_layout.addWidget(second_line_widget)
+        layout.addWidget(self.border_widget)
+
+        layout.addStretch() # 佔滿剩下空間，讓其他元件靠上
 
         buttons = QDialogButtonBox(QtCore.Qt.Horizontal, self)
-
         ok_button = QPushButton("確認")
         cancel_button = QPushButton("取消")
         buttons.addButton(ok_button, QDialogButtonBox.AcceptRole)
@@ -48,15 +90,59 @@ class DelayInputDialog(QtWidgets.QDialog):
         cancel_button.clicked.connect(self.reject)
         layout.addWidget(buttons)
 
-    def _accept(self):
-        if len(self.input_edit.text()) == 0:
-            QtWidgets.QMessageBox.warning(self, "", "延遲時間不能空白")
-            return
+        # 初始化顯示
+        self._on_type_changed(0 if self.delay.type == 'time' else 1)
 
-        if float(self.input_edit.text()) < 0:
-            QtWidgets.QMessageBox.warning(self, "", "延遲時間須大於-1")
-            return
-        self.delay.time = float(self.input_edit.text())
+    def _get_operator_text(self, operator: str) -> str:
+        operator_map = {
+            'lt': '小於',
+            'lte': '小於等於',
+            'eq': '等於',
+            'gte': '大於等於',
+            'gt': '大於'
+        }
+        return operator_map.get(operator, '小於')
+
+    def _get_operator_value(self, text: str) -> str:
+        operator_map = {
+            '小於': 'lt',
+            '小於等於': 'lte',
+            '等於': 'eq',
+            '大於等於': 'gte',
+            '大於': 'gt'
+        }
+        return operator_map.get(text, 'lt')
+
+    def _on_type_changed(self, index: int):
+        is_time = index == 0
+        self.time_widget.setVisible(is_time)
+        self.border_widget.setVisible(not is_time)
+        self.delay.type = 'time' if is_time else 'border'
+        
+    def _accept(self):
+        if self.delay.type == 'time':
+            if len(self.time_edit.text()) == 0:
+                QtWidgets.QMessageBox.warning(self, "", "延遲時間不能空白")
+                return
+
+            if float(self.time_edit.text()) < 0:
+                QtWidgets.QMessageBox.warning(self, "", "延遲時間須大於-1")
+                return
+            self.delay.time = float(self.time_edit.text())
+        else:
+              
+            if len(self.ratio_edit.text()) == 0:
+                QtWidgets.QMessageBox.warning(self, "", "比例不能空白")
+                return
+            
+            ratio = int(self.ratio_edit.text())
+            if ratio < 0 or ratio > 100:
+                QtWidgets.QMessageBox.warning(self, "", "比例需是0-100的整數")
+                return    
+            
+            self.delay.ratio = ratio
+            self.delay.operator = self._get_operator_value(self.operator_combo.currentText())
+
         self.accept()
 
     def get_value(self):
@@ -187,7 +273,17 @@ class CommandListWidget(DragMoveQListWidget):
         def _get_format_text():
             t = ''
             if isinstance(command, DelayCommandModel):
-                t = f"延遲 {command.time} 秒"
+                if command.type == 'time':
+                    t = f"延遲 {command.time} 秒"
+                else:
+                    operator_map = {
+                        'lt': '小於',
+                        'lte': '小於等於',
+                        'eq': '等於',
+                        'gte': '大於等於',
+                        'gt': '大於'
+                    }
+                    t = f"延遲到人物位置{operator_map.get(command.operator, '未知')} 地圖寬度百分比 {command.ratio}%"
             elif isinstance(command, KeyboardCommandModel):
                 t = f"{'按下' if command.event_type == 'down' else '抬起'} {command.event_name}"
             return t
@@ -220,7 +316,7 @@ class CommandListWidget(DragMoveQListWidget):
             self.edit_command(index, dialog.get_value())
 
     def add_delay(self, index):
-        if index >= len(self.commands) or index < 0:
+        if index < 0:
             return
 
         dialog = DelayInputDialog()

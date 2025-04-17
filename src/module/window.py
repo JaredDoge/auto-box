@@ -5,6 +5,7 @@ from ctypes import wintypes
 import mss
 import mss.windows
 
+from src import config
 from src.module import screen
 
 user32 = ctypes.windll.user32
@@ -17,7 +18,7 @@ class WindowTool:
         mss.windows.CAPTUREBLT = 0
 
     def _handle(self):
-        return user32.FindWindowW(None, '永恆谷')
+        return user32.FindWindowW(None, config.data.get_base().app)
 
     def is_foreground(self):
         return self._handle() == user32.GetForegroundWindow()

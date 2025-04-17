@@ -9,7 +9,7 @@ from src.data.macro_model import MacroRowModel
 from src.module.log import log
 from src.module.feat.macro.frame_provider import FrameProvider
 from src.module.feat.macro.macro_task import MacroTaskWrapper
-from src.module.feat.macro.macro_util import find_minimap, get_minimap, find_rune, find_player2, find_rune_lock_buff_p1, find_rune_lock_buff_p2
+from src.module.feat.macro.macro_util import find_minimap, get_buff_frame, get_minimap, find_rune, find_player2, find_rune_lock_buff_p1, find_rune_lock_buff_p2
 from src.module.feat.macro.resolve_rune_task import ResolveRuneTaskWrapper
 from src.module import screen
 from src.module.tools.mini_map import find_portal
@@ -93,7 +93,9 @@ class MacroExecutor(FrameProvider):
                     await asyncio.sleep(self._INTERVAL)
                     continue
 
-                if rune and player and not find_rune_lock_buff_p1(full) and not find_rune_lock_buff_p2(full):
+                buff_frame = get_buff_frame(full)
+
+                if rune and player and not find_rune_lock_buff_p1(buff_frame) and not find_rune_lock_buff_p2(buff_frame):
                     await self._cancel(self.current_task)
                     task = self.looper.run_task(resolve_rune.create(_resole_rune_done, rune, mm_tl, mm_br))
                     task.set_name(resolve_rune.NAME)

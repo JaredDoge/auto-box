@@ -9,7 +9,7 @@ from src.module import screen
 from src.module.log import log
 from src.module.feat.macro.macro_task import MacroTaskWrapper
 from src.module.looper import TaskWrapper
-from src.module.feat.macro.macro_util import get_minimap, find_player2, find_rune_buff
+from src.module.feat.macro.macro_util import get_buff_frame, get_minimap, find_player2, find_rune_buff
 from enum import Enum
 
 
@@ -177,7 +177,7 @@ class ResolveRuneTaskWrapper(TaskWrapper):
 
                     full = await config.window_tool.wait_game_screen()
 
-                    if find_rune_buff(full):
+                    if find_rune_buff(get_buff_frame(full)):
                         log('成功解輪')
                         done()
                         return

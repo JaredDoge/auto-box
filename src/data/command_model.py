@@ -1,7 +1,7 @@
 from dataclasses import dataclass, field
-from typing import TypeAlias, Union
-
-from dataclasses_json import dataclass_json
+from typing import TypeAlias, Union, Literal
+from marshmallow import fields
+from dataclasses_json import config, dataclass_json
 
 
 @dataclass_json
@@ -12,17 +12,17 @@ class CommandModelBase:
 
 @dataclass_json
 @dataclass
-class HorizontalBorderCommandModel(CommandModelBase):
-    command: str = field(init=False, default='horizontal_border')
-    operator: str
-    ratio: float
-
-
-@dataclass_json
-@dataclass
 class DelayCommandModel(CommandModelBase):
     command: str = field(init=False, default='delay')
-    time: float
+    type: Literal['time', 'border'] = field(
+        default='time',
+        metadata=config(
+            mm_field=fields.String(validate=lambda x: x in ['time', 'border'])
+        )
+    )  # 預設為時間延遲，兼容舊版格式
+    time: float = 0.0  # Used when type is 'time'
+    operator: str = ''  # Used when type is 'border' (lt, lte, eq, gte, gt)
+    ratio: int = 0  # Used when type is 'border'
 
 
 @dataclass_json
@@ -33,4 +33,4 @@ class KeyboardCommandModel(CommandModelBase):
     event_name: str
 
 
-CommandModel: TypeAlias = Union[DelayCommandModel, KeyboardCommandModel, HorizontalBorderCommandModel]
+CommandModel: TypeAlias = Union[DelayCommandModel, KeyboardCommandModel]

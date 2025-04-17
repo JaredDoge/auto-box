@@ -28,21 +28,25 @@ def find_rune(minimap):
         return matches[0][0], matches[0][1]
     return None
 
+def get_buff_frame(full):
+    # 取圖片高度的前1/4，寬度的右邊2/3部分
+    return full[:full.shape[0] // 4, full.shape[1] // 3:]
 
-def find_rune_lock_buff_p1(full):
-    return cv2_util.multi_match(full[:full.shape[0] // 8, :],
+
+def find_rune_lock_buff_p1(frame):
+    return cv2_util.multi_match(frame,
                                 RUNE_LOCK_BUFF_TEMPLATE_P1,
                                 threshold=0.9)
 
 
-def find_rune_lock_buff_p2(full):
-    return cv2_util.multi_match(full[:full.shape[0] // 8, :],
+def find_rune_lock_buff_p2(frame):
+    return cv2_util.multi_match(frame,
                                 RUNE_LOCK_BUFF_TEMPLATE_P2,
                                 threshold=0.9)
 
 
-def find_rune_buff(full):
-    return cv2_util.multi_match(full[:full.shape[0] // 8, :],
+def find_rune_buff(frame):
+    return cv2_util.multi_match(frame,
                                 RUNE_BUFF_TEMPLATE,
                                 threshold=0.9)
 
