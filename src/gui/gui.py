@@ -142,7 +142,7 @@ class MainWindow(QtWidgets.QMainWindow):
         self.list_widget.setStyleSheet("QListWidget { border: none; }")
         self.list_widget.setFixedWidth(70)
 
-        self.switch_btn = FeatureItemWidget("啟動(F5)", "res/play.png")
+        self.switch_btn = FeatureItemWidget("啟動(F4)", "res/play.png")
         self.setting_btn = FeatureItemWidget("設定", "res/settings.png")
 
         menu_layout.addWidget(self.list_widget, stretch=1)

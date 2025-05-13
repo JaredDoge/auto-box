@@ -126,7 +126,7 @@ class DependExecutor:
                 identify_frame = depend_util.get_block_frame(full, box.identify_block)
 
                 # 等 傳說 出現
-                if not depend_util.legend_exist(identify_frame):
+                if not depend_util.entry_exist(identify_frame):
                     await asyncio.sleep(0.2)
                     continue
                 # 開始辨識前確保滑鼠不在辨識範圍

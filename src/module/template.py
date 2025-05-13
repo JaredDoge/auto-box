@@ -14,8 +14,11 @@ RECOVER_BR_TEMPLATE = cv2.imread('res/depend/recover_br.png', cv2.IMREAD_GRAYSCA
 RECOVER_AFTER_TEMPLATE = cv2.imread('res/depend/recover_after.png', cv2.IMREAD_GRAYSCALE)
 RECOVER_TEMPLATE = cv2.imread('res/depend/recover.png', cv2.IMREAD_UNCHANGED)  # 珍貴跟恢復 要用顏色分差別
 RECOVER_AGAIN_TEMPLATE = cv2.imread('res/depend/recover_again.png', cv2.IMREAD_GRAYSCALE)
-
-LEGEND_TEMPLATE = cv2.imread('res/depend/legend.png', cv2.IMREAD_UNCHANGED)  # 傳說字眼 包含RGB辨識比較準確
+# 詞條字眼 包含RGB辨識比較準確
+LEGEND_TEMPLATE = cv2.imread('res/depend/legend.png', cv2.IMREAD_UNCHANGED)  # 傳說
+SCARCE_TEMPLATE = cv2.imread('res/depend/scarce.png', cv2.IMREAD_UNCHANGED)  # 罕見
+RARE_TEMPLATE = cv2.imread('res/depend/rare.png', cv2.IMREAD_UNCHANGED)  # 稀有
+SPECIAL_TEMPLATE = cv2.imread('res/depend/special.png', cv2.IMREAD_UNCHANGED)  # 特殊
 OK_TEMPLATE = cv2.imread('res/depend/ok.png', cv2.IMREAD_GRAYSCALE)
 
 CHANNEL_CHANGE = cv2.imread('res/depend/rescue/channel_change.png', cv2.IMREAD_UNCHANGED)

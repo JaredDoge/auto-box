@@ -13,8 +13,9 @@ class SceneDepend(QtWidgets.QWidget, SwitchListener, metaclass=QWidgetABCMeta):
         sw = config.switch
         if sw.is_on():
             # 停止腳本
-            self.executor.stop()
             sw.idle()
+            self.executor.stop()
+            
         elif sw.is_off():
             # 開始腳本
             self.executor.start(self.bot.get_run_list())

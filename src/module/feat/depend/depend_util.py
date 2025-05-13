@@ -79,8 +79,13 @@ def ok_exist(frame):
     return cv2_util.single_match(frame, template.OK_TEMPLATE)
 
 
-def legend_exist(frame):
-    return cv2_util.single_match_with_color(frame, template.LEGEND_TEMPLATE)
+def entry_exist(frame):
+    return cv2_util.single_match_with_color(frame, template.LEGEND_TEMPLATE) or \
+            cv2_util.single_match_with_color(frame, template.SCARCE_TEMPLATE) or \
+            cv2_util.single_match_with_color(frame, template.RARE_TEMPLATE) or \
+            cv2_util.single_match_with_color(frame, template.SPECIAL_TEMPLATE) 
+
+
 
 
 def get_attr_template(attrs):
